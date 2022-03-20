@@ -3,43 +3,101 @@
 
 {% block body%}
 
-    <h1 class="text-center">Edit page test</h1>
-    <div class="container">
-      <form class="" method='post' enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row">
-          <div class="col">
-            <label for="exampleFormControlInput1" class="form-label">Team Name</label>
-            <input name='name' class="form-control" placeholder="Team Name" aria-label="Team Name">
-			<br>
-            <label for="exampleFormControlInput1" class="form-label">Team Rank</label>
-            <input name='rank' class="form-control" id="exampleFormControlInput1" placeholder="69">
-			<br>
-            <label for="exampleFormControlTextarea1" class="form-label">Region</label>
-			<br>
-			<select class="form-select" aria-label="Regions" name="region">
-			<option selected>Choose a region</option>
-			<option value="America">America</option>
-			<option value="Europe">Europe</option>
-			<option value="Ocenia">Ocenia</option>
-			<option value="Asia">Asia</option>
-			<option value="Africa">Africa</option>
-			<option value="International">International</option>
-			</select>
-			<br>
-			<div class="mb-3">
-			<label for="formFile" class="form-label">Upload a logo</label>
-			<input class="form-control" name="logo" type="file" id="formFile">
-			</div>
-			<br>
-            <div class="mt-2">
-              <input class="btn btn-primary" type="submit" value="Submit">
-            </div>
-          </div>
-        </div>
-      </form>
-     
-      
-    </div>
+<h1 class="text-center">Add a new team</h1>
+<div class="container">
+	<form class="" method='post' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col">
+		<label for="exampleFormControlInput1" class="form-label">Team Name</label>
+		<input name='name' class="form-control" placeholder="Team Name" aria-label="Team Name">
+		<br>
+		<label for="exampleFormControlInput1" class="form-label">Team Rank</label>
+		<input name='rank' class="form-control" id="exampleFormControlInput1" type="number" step="1" max="1000" value="1">
+		<br>
+		<label for="exampleFormControlTextarea1" class="form-label">Region</label>
+		<br>
+		<select class="form-select" aria-label="Regions" name="region">
+		<option selected>Choose a region</option>
+		<option value="America">America</option>
+		<option value="Europe">Europe</option>
+		<option value="Ocenia">Ocenia</option>
+		<option value="Asia">Asia</option>
+		<option value="Africa">Africa</option>
+		<option value="International">International</option>
+		</select>
+		<br>
+		<div class="mb-3">
+		<label for="formFile" class="form-label">Upload a logo</label>
+		<input class="form-control" name="logo" type="file" id="formFile">
+		</div>
+		<br>
+		<div class="mt-2">
+			<input class="btn btn-primary" type="submit" value="Submit">
+		</div>
+		</div>
+	</div>
+	</form>
+
+	<br>
+	<br>
+	<br>
+	
+	<div class="bd-example">
+	<h1 class="text-center">Edit an existing team</h1>
+		<table class="table table-hover">
+		<thead>
+			<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Rank</th>
+			<th scope="col">Team</th>
+			<th scope="col">Region</th>
+			<th scope="col">Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for team in teams %}
+			<tr>
+				<td>{{ team.id }} </td>
+				<td>{{ team.rank }} </td>
+				<td>
+					{% if team.logo %}
+						<img src="{{ team.logo.url }}" alt="" class="team-logo" width="28" height="28px">
+					{% else %}
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+					{% endif %}
+					{{ team.name }} 
+				</td>
+				<td>{{ team.region }} </td>
+				<td>
+					<a href="#" class="btn btn-outline-success">Edit</a>
+					{% comment %} <a href="#" class="btn btn-danger badge">Delete</a> {% endcomment %}
+					<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEntry{{ team.id }}">Delete</button>
+						<!-- Modal -->
+						<div class="modal fade" id="deleteEntry{{ team.id }}" tabindex="-1" aria-labelledby="deleteTeamEntry" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="deleteTeamEntry">Delete this entry?</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								Are you sure you want to permanently delete this entry? <br>
+								Team Name: {{ team.name }}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
+								<a class="btn btn-danger" href="{% url 'delete_team' team.id %}">Delete</a>
+							</div>
+							</div>
+						</div>
+						</div>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+	</div>
+</div>
 
 {% endblock %}

@@ -3,38 +3,36 @@
 
 {% block body%}
 
-<table class="table table-striped table-hover">
-  <thead>
-	<tr>
-	  <th scope="col">ID</th>
-	  <th scope="col">Rank</th>
-	  {% comment %} <th scope="col">Logo</th> {% endcomment %}
-	  <th scope="col">Team</th>
-	  <th scope="col">Region</th>
-	  <th scope="col">Edit</th>
-	</tr>
-  </thead>
-  <tbody>
-	{% for team in teams %}
-	<tr>
-		<td>{{ team.id }} </td>
-		<td>{{ team.rank }} </td>
-		<td>
-			{% if team.logo %}
-				<img src="{{ team.logo.url }}" alt="" class="team-logo" width="25" height="25px">
-			{% else %}
-				<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
-			{% endif %}
-			{{ team.name }} 
-		</td>
-		<td>{{ team.region }} </td>
-		<td>
-			<a href="#" class="btn btn-success badge">Edit</a>
-			<a href="#" class="btn btn-danger badge">Delete</a>
-		</td>
-	</tr>
-	{% endfor %}
-  </tbody>
-</table>
+<div class="container">
+	<br>
+	<div class="bd-example">
+	<h1 class="text-center">Teams Ranking</h1>
+		<table class="table table-hover">
+		<thead>
+			<tr>
+			<th scope="col">Rank</th>
+			<th scope="col">Team</th>
+			<th scope="col">Region</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for team in teams %}
+			<tr>
+				<td>#{{ team.rank }} </td>
+				<td>
+					{% if team.logo %}
+						<img src="{{ team.logo.url }}" alt="" class="team-logo" width="28" height="28px">
+					{% else %}
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+					{% endif %}
+					{{ team.name }} 
+				</td>
+				<td>{{ team.region }} </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+	</div>
+</div>
 
 {% endblock %}

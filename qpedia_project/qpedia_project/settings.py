@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-26^z@*g$87uvu6%+p#0d#xuies0@f&@c@m_i&=cau5j#3(#8n+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	"*",
+]
 
 
 # Application definition
@@ -130,6 +132,8 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
