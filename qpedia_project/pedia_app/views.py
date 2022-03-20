@@ -83,10 +83,25 @@ def edit_tournies(request):
 		messages.success(request, "Tournament "+name+" Added!")
 		return redirect('edit_tournies')
 	return render(request, 'pedia_app/edit_tournies.html', context)
+def edit_team(request, team_id):
+	team = Teams.objects.get(pk=team_id)
+	if request.method == 'POST':
+		if len(request.FILES) != 0:
+			if len(team.logo) > 0:
+				os.remove(team.logo.path)
+			team.logo = request.FILES['logo']
+		team.name = request.POST.get('name')
+		team.rank = request.POST.get('rank')
+		team.region = request.POST.get('region')
+		team.save()
+		messages.success(request, "Team entry updated")
+		return redirect('edit_teams')
+	context = {'team':team}
+	return render(request, 'pedia_app/edit_team.html', context)
 def delete_team(request, team_id):
 	team = Teams.objects.get(pk=team_id)
-	# if team.logo:
-		# os.remove(team.logo.path)
+	if team.logo:
+		os.remove(team.logo.path)
 	team.delete()
 	messages.success(request, "Successfuly deleted the team entry")
 	return redirect('edit_teams')
