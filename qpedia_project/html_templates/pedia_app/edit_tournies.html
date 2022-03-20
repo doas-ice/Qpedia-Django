@@ -142,7 +142,7 @@
 				<td>{{ tourney.region }} </td>
 				<td>{{ tourney.date_start }} </td>
 				<td>{{ tourney.date_end }} </td>
-				<td>{{ tourney.date_end }} </td>
+				<td>{{ tourney.date_start | timeuntil }} </td>
 				<td>
 					<a href="#" class="btn btn-outline-success">Edit</a>
 					{% comment %} <a href="#" class="btn btn-danger badge">Delete</a> {% endcomment %}

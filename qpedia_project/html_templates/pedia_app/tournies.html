@@ -34,7 +34,7 @@
 				<td>{{ tourney.region }} </td>
 				<td>{{ tourney.date_start }} </td>
 				<td>{{ tourney.date_end }} </td>
-				<td>{{ tourney.date_end }} </td>
+				<td>{{ tourney.date_start | timeuntil }} </td>
 			</tr>
 			{% endfor %}
 		</tbody>
