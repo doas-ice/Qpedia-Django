@@ -1,0 +1,46 @@
+{% extends "pedia_app/layout.html" %}
+{% load static %}
+
+{% block body%}
+	<br>
+	
+<div class="container">
+	<br>
+	<div class="bd-example">
+	<h1 class="text-center">All Tournaments</h1>
+		<table class="table table-hover">
+		<thead>
+			<tr>
+			<th scope="col">Tier</th>
+			<th scope="col">Tournament</th>
+			<th scope="col">Region</th>
+			<th scope="col">Starting Date</th>
+			<th scope="col">End Date</th>
+			<th scope="col">Time Left</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for tourney in tournies %}
+			<tr>
+				<td>{{ tourney.tier }} </td>
+				<td>
+					{% if tourney.logo %}
+						<img src="{{ tourney.logo.url }}" alt="" class="Tournament-logo" width="28" height="28px">
+					{% else %}
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+					{% endif %}
+					{{ tourney.name }} 
+				</td>
+				<td>{{ tourney.region }} </td>
+				<td>{{ tourney.date_start }} </td>
+				<td>{{ tourney.date_end }} </td>
+				<td>{{ tourney.date_end }} </td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+	</div>
+</div>
+</div>
+
+{% endblock %}
