@@ -3,43 +3,157 @@
 
 {% block body%}
 
-    <h1 class="text-center">Edit page test</h1>
-    <div class="container">
-      <form class="" method='post' enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row">
-          <div class="col">
-            <label for="exampleFormControlInput1" class="form-label">Team Name</label>
-            <input name='name' class="form-control" placeholder="Team Name" aria-label="Team Name">
-			<br>
-            <label for="exampleFormControlInput1" class="form-label">Team Rank</label>
-            <input name='rank' class="form-control" id="exampleFormControlInput1" placeholder="69">
-			<br>
-            <label for="exampleFormControlTextarea1" class="form-label">Region</label>
-			<br>
-			<select class="form-select" aria-label="Regions" name="region">
-			<option selected>Choose a region</option>
-			<option value="America">America</option>
-			<option value="Europe">Europe</option>
-			<option value="Ocenia">Ocenia</option>
-			<option value="Asia">Asia</option>
-			<option value="Africa">Africa</option>
-			<option value="International">International</option>
-			</select>
-			<br>
-			<div class="mb-3">
-			<label for="formFile" class="form-label">Upload a logo</label>
-			<input class="form-control" name="logo" type="file" id="formFile">
+	{% for msg in messages %}
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>{{msg}}</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+			{% comment %} <span aria-hidden="true">&times;</span> {% endcomment %}
+		</button>
+	</div>
+	{% endfor %}
+
+<h1 class="text-center">Add a new Match Entry</h1>
+<div class="container">
+	<form class="" method='post' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col">
+		<label for="exampleFormControlTextarea1" class="form-label">Tournament</label>
+		<br>
+		<select class="form-select" aria-label="Tournament" name="tourney">
+		<option disabled selected>Choose a Tournament</option>
+		{% for t in tourney %}
+		<option value="{{ t.id }}">{{ t.name }}</option>
+		{% endfor %}
+		</select>
+		<br>
+		<label for="exampleFormControlTextarea1" class="form-label">Teams and Score</label>
+		<br>
+		<select class="form-select" style="width: 35%; display: inline-block;" aria-label="Team 1" name="team1">
+		<option disabled selected>First team</option>
+		{% for t in teams %}
+		<option value="{{ t.id }}">{{ t.name }}</option>
+		{% endfor %}
+		</select>
+		<input name='score1' class="form-control" style="width: 10%; display: inline-block;" id="exampleFormControlInput1" type="number" step="1" max="10" value="0">   
+		<p style="width:10%; display:inline;"> &nbsp;&nbsp;&nbsp;&nbsp; vs &nbsp;&nbsp;&nbsp;&nbsp;</p>
+		<input name='score2' class="form-control" style="width: 10%; display: inline-block;" id="exampleFormControlInput1" type="number" step="1" max="10" value="0">
+		<select class="form-select" style="width: 35%; display: inline-block;" aria-label="Team 2" name="team2">
+		<option disabled selected>Second team</option>
+		{% for t in teams %}
+		<option value="{{ t.id }}">{{ t.name }}</option>
+		{% endfor %}
+		</select>
+		<br>
+		<br>
+		<label for="exampleFormControlTextarea1" class="form-label">Match Time</label>
+		<br>
+			<div
+				class='input-group'
+				id='datetimepicker1'
+				data-td-target-input='nearest'
+				data-td-target-toggle='nearest'
+			>
+			<input
+				id='datetimepicker1Input'
+				name='time'
+				type='text'
+				class='form-control'
+				data-td-target='#datetimepicker1'
+			/>
+			<span
+				class='input-group-text'
+				data-td-target='#datetimepicker1'
+				data-td-toggle='datetimepicker'
+			>
+				<span class='fas fa-calendar'></span>
+			</span>
 			</div>
-			<br>
-            <div class="mt-2">
-              <input class="btn btn-primary" type="submit" value="Submit">
-            </div>
-          </div>
-        </div>
-      </form>
-     
-      
-    </div>
+
+			<script type="text/javascript">
+				new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'));
+			</script>
+           
+		<br>
+		<div class="mt-2">
+			<input class="btn btn-primary" type="submit" value="Submit">
+		</div>
+		</div>
+	</div>
+	</form>
+
+	<br>
+	<br>
+	<br>
+	
+	<div class="bd-example">
+	<h1 class="text-center">Edit an existing Match</h1>
+		<table class="table table-hover">
+		<thead>
+			<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Tournament</th>
+			<th scope="col">Team 1</th>
+			<th scope="col">Score 1</th>
+			<th scope="col">Score 2</th>
+			<th scope="col">Team 2</th>
+			<th scope="col">Match Time</th>
+			<th scope="col">Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for match in matches %}
+			<tr>
+				<td>{{ match.id }} </td>
+				<td>{{ match.tourney_id.name }} </td>
+				<td>
+					{% if match.t1_id.logo %}
+						<img src="{{ match.t1_id.logo.url }}" alt="" class="team-logo" width="28" height="28px">
+					{% else %}
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+					{% endif %}
+					{{ match.t1_id.name }} 
+				</td>
+				<td>{{ match.score1 }} </td>
+				<td>{{ match.score2 }} </td>
+				<td>
+					{% if match.t2_id.logo %}
+						<img src="{{ match.t2_id.logo.url }}" alt="" class="team-logo" width="28" height="28px">
+					{% else %}
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+					{% endif %}
+					{{ match.t2_id.name }} 
+				</td>
+				<td>{{ match.time | timeuntil }} </td>
+				<td>
+					<a href="" class="btn btn-outline-success">Edit</a>
+					{% comment %} <a href="#" class="btn btn-danger badge">Delete</a> {% endcomment %}
+					<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEntry{{ match.id }}">Delete</button>
+						<!-- Modal -->
+						<div class="modal fade" id="deleteEntry{{ match.id }}" tabindex="-1" aria-labelledby="deleteTeamEntry" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="deleteTeamEntry">Delete this entry?</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								Are you sure you want to permanently delete this entry? <br>
+								{% comment %} Team Name: {{ team.name }} {% endcomment %}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
+								<a class="btn btn-danger" href="">Delete</a>
+							</div>
+							</div>
+						</div>
+						</div>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+	</div>
+</div>
 
 {% endblock %}
