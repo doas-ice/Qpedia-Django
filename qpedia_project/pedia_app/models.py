@@ -1,5 +1,5 @@
+import os
 from django.db import models
-import datetime, os
 
 # Create your models here.
 
@@ -20,10 +20,20 @@ class Tournies(models.Model):
 	winner = models.IntegerField(null=True, blank=True)
 
 class Matches(models.Model):
-	tournament = models.IntegerField()
-	team1 = models.IntegerField()
-	team2 = models.IntegerField()
+	T1 = 'T1'
+	T2 = 'T2'
+	DW = 'DW'
+	ON = 'ON'
+	WINNER_CHOICES = [
+		(T1, 'Team1'),
+		(T2, 'Team2'),
+		(DW, 'Draw'),
+		(ON, 'Ongoing'),
+	]
+	tourney = models.ForeignKey(Tournies, on_delete=models.CASCADE)
+	team1 = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='t1')
+	team2 = models.ForeignKey(Teams, on_delete=models.CASCADE, related_name='t2')
 	score1 = models.IntegerField()
 	score2 = models.IntegerField()
 	time = models.DateTimeField()
-	
+	winner = models.CharField(max_length=2, choices=WINNER_CHOICES, default=ON)
