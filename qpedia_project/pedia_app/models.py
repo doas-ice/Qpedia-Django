@@ -36,4 +36,5 @@ class Matches(models.Model):
 	score1 = models.IntegerField()
 	score2 = models.IntegerField()
 	time = models.DateTimeField()
+	is_finished = models.BooleanField(default=False)
 	winner = models.CharField(max_length=2, choices=WINNER_CHOICES, default=ON)

@@ -4,7 +4,7 @@
 {% block body%}
 
 	{% for msg in messages %}
-	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
 		<strong>{{msg}}</strong>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
 			{% comment %} <span aria-hidden="true">&times;</span> {% endcomment %}
@@ -35,9 +35,11 @@
 		<option value="{{ t.id }}">{{ t.name }}</option>
 		{% endfor %}
 		</select>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input name='score1' class="form-control" style="width: 10%; display: inline-block;" id="exampleFormControlInput1" type="number" step="1" max="10" value="0">   
 		<p style="width:10%; display:inline;"> &nbsp;&nbsp;&nbsp;&nbsp; vs &nbsp;&nbsp;&nbsp;&nbsp;</p>
 		<input name='score2' class="form-control" style="width: 10%; display: inline-block;" id="exampleFormControlInput1" type="number" step="1" max="10" value="0">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<select class="form-select" style="width: 35%; display: inline-block;" aria-label="Team 2" name="team2">
 		<option disabled selected>Second team</option>
 		{% for t in teams %}
@@ -105,29 +107,28 @@
 			{% for match in matches %}
 			<tr>
 				<td>{{ match.id }} </td>
-				<td>{{ match.tourney_id.name }} </td>
+				<td>{{ match.tourney.name }} </td>
 				<td>
-					{% if match.t1_id.logo %}
-						<img src="{{ match.t1_id.logo.url }}" alt="" class="team-logo" width="28" height="28px">
+					{% if match.team1.logo %}
+						<img src="{{ match.team1.logo.url }}" alt="" class="team-logo" width="28" height="28px">
 					{% else %}
 						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
 					{% endif %}
-					{{ match.t1_id.name }} 
+					{{ match.team1.name }} 
 				</td>
 				<td>{{ match.score1 }} </td>
 				<td>{{ match.score2 }} </td>
 				<td>
-					{% if match.t2_id.logo %}
-						<img src="{{ match.t2_id.logo.url }}" alt="" class="team-logo" width="28" height="28px">
+					{% if match.team2.logo %}
+						<img src="{{ match.team2.logo.url }}" alt="" class="team-logo" width="28" height="28px">
 					{% else %}
 						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
 					{% endif %}
-					{{ match.t2_id.name }} 
+					{{ match.team2.name }} 
 				</td>
 				<td>{{ match.time | timeuntil }} </td>
 				<td>
-					<a href="" class="btn btn-outline-success">Edit</a>
-					{% comment %} <a href="#" class="btn btn-danger badge">Delete</a> {% endcomment %}
+					<a href="{% url 'edit_match' match.id %}" class="btn btn-outline-success">Edit</a>
 					<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEntry{{ match.id }}">Delete</button>
 						<!-- Modal -->
 						<div class="modal fade" id="deleteEntry{{ match.id }}" tabindex="-1" aria-labelledby="deleteTeamEntry" aria-hidden="true">
@@ -139,11 +140,11 @@
 							</div>
 							<div class="modal-body">
 								Are you sure you want to permanently delete this entry? <br>
-								{% comment %} Team Name: {{ team.name }} {% endcomment %}
+								Match between {{ match.team1.name }} and {{ match.team2.name }}
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
-								<a class="btn btn-danger" href="">Delete</a>
+								<a class="btn btn-danger" href="{% url 'delete_match' match.id %}">Delete</a>
 							</div>
 							</div>
 						</div>
