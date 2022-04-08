@@ -1,0 +1,126 @@
+{% extends "pedia_app/layout.html" %}
+{% load static %}
+
+{% block body%}
+
+	{% for msg in messages %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<strong>{{msg}}</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+		</button>
+	</div>
+	{% endfor %}
+
+<section>
+<h1 class="text-center">Add a new player entry</h1>
+<div class="container">
+	<form class="" method='post' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col">
+		<label for="exampleFormControlInput1" class="form-label">Player Name</label>
+		<input name='name' class="form-control" placeholder="Player Name" aria-label="Player Name">
+		<br>
+		<label for="exampleFormControlInput1" class="form-label">Player IGN</label>
+		<input name='ign' class="form-control" placeholder="Player IGN" aria-label="Player IGN">
+		<br>
+		<label for="exampleFormControlInput1" class="form-label">Country</label>
+		<input name='country' class="form-control" placeholder="Country" aria-label="Player Country">
+		<br>
+		<input name='age' class="form-control" id="exampleFormControlInput1" type="number" step="1" max="200" value="18">
+		<br>
+		<select class="form-select" aria-label="Team" name="team">
+		<option disabled selected>Team</option>
+		{% for t in teams %}
+		<option value="{{ t.id }}">{{ t.name }}</option>
+		{% endfor %}
+		</select>
+		<br>
+		<div class="mb-3">
+		<label for="formFile" class="form-label">Upload player photo</label>
+		<input class="form-control" name="photo" type="file" id="formFile">
+		</div>
+		<br>
+		<div class="mt-2">
+			<input class="btn btn-primary" type="submit" value="Submit">
+		</div>
+		</div>
+	</div>
+	</form>
+
+
+</section>
+
+	<br>
+	<br>
+	<br>
+	
+<div class="container">
+	<div class="bd-example">
+	<h1 class="text-center">Edit an existing Player</h1>
+		<table class="table table-hover">
+		<thead>
+			<tr>
+			<th scope="col">Photo</th>
+			<th scope="col">IGN</th>
+			<th scope="col">Name</th>
+			<th scope="col">Age</th>
+			<th scope="col">Country</th>
+			<th scope="col">Team</th>
+			<th scope="col">Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for player in players %}
+			<tr>
+				<td>
+					{% if player.photo %}
+						<img src="{{ player.photo.url }}" alt="" class="Player-photo" width="28px" height="28px">
+					{% else %}
+						<img src="{% static 'images/player_placeholder.png' %}" alt="" class="player-placeholder" width="28px" height="28">
+					{% endif %}
+				</td>
+				<td>{{ player.ign }} </td>
+				<td>{{ player.name }} </td>
+				<td>{{ player.age }} </td>
+				<td>{{ player.country }} </td>
+				<td>
+					{% if player.team.logo %}
+						<img src="{{ player.team.logo.url }}" alt="logo" class="team-logo" width="28px" height="28px">
+					{% else %}
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
+					{% endif %}
+					{{ player.team.name }} 
+				</td>
+				<td>
+					<a href="{% url 'edit_player' player.id %}" class="btn btn-outline-success">Edit</a>
+					<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEntry{{ player.id }}">Delete</button>
+						<!-- Modal -->
+						<div class="modal fade" id="deleteEntry{{ player.id }}" tabindex="-1" aria-labelledby="deleteTournamentEntry" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="deleteTournamentEntry">Delete this entry?</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								Are you sure you want to permanently delete this entry? <br>
+								Player Name: {{ player.name }}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
+								<a class="btn btn-danger" href="{% url 'delete_player' player.id %}">Delete</a>
+							</div>
+							</div>
+						</div>
+						</div>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+	</div>
+</div>
+</div>
+
+{% endblock %}

@@ -10,10 +10,13 @@
           <a class="nav-link active" aria-current="page" href="{% url 'matches' %}">Matches</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'teams' %}">Teams</a>
+          <a class="nav-link" href="{% url 'tournies' %}">Tournaments</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'tournies' %}">Tournaments</a>
+          <a class="nav-link" href="{% url 'players' %}">Players</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'teams' %}">Teams</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,8 +24,9 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="{% url 'edit_matches' %}">Edit Matches</a></li>
-            <li><a class="dropdown-item" href="{% url 'edit_teams' %}">Edit Teams</a></li>
             <li><a class="dropdown-item" href="{% url 'edit_tournies' %}">Edit Tournaments</a></li>
+            <li><a class="dropdown-item" href="{% url 'edit_players' %}">Edit Players</a></li>
+            <li><a class="dropdown-item" href="{% url 'edit_teams' %}">Edit Teams</a></li>
           </ul>
         </li>
       </ul>

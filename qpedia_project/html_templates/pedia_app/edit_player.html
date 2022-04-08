@@ -1,0 +1,56 @@
+{% extends "pedia_app/layout.html" %}
+{% load static %}
+
+{% block body%}
+
+	{% for msg in messages %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<strong>{{msg}}</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+		</button>
+	</div>
+	{% endfor %}
+
+<section>
+<h1 class="text-center">Edit player entry</h1>
+<div class="container">
+	<form class="" method='post' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col">
+		<label for="exampleFormControlInput1" class="form-label">Player Name</label>
+		<input name='name' class="form-control" placeholder="Player Name" aria-label="Player Name" value="{{ player.name }}">
+		<br>
+		<label for="exampleFormControlInput1" class="form-label">Player IGN</label>
+		<input name='ign' class="form-control" placeholder="Player IGN" aria-label="Player IGN" value="{{ player.ign }}">
+		<br>
+		<label for="exampleFormControlInput1" class="form-label">Country</label>
+		<input name='country' class="form-control" placeholder="Country" aria-label="Player Country" value="{{ player.country }}">
+		<br>
+		<input name='age' class="form-control" id="exampleFormControlInput1" type="number" step="1" max="200" value="{{ player.age }}">
+		<br>
+		<select class="form-select" aria-label="Team" name="team">
+		<option disabled selected value="{{ player.team.id }}">{{ player.team.name }}</option>
+		{% for t in teams %}
+		<option value="{{ t.id }}">{{ t.name }}</option>
+		{% endfor %}
+		</select>
+		<br>
+		<div class="mb-3">
+		<label for="formFile" class="form-label">Upload player photo</label>
+		<input class="form-control" name="photo" type="file" id="formFile">
+		</div>
+		<br>
+		<div class="mt-2">
+			<input class="btn btn-primary" type="submit" value="Submit">
+		</div>
+		</div>
+	</div>
+	</form>
+
+</section>
+
+</div>
+</div>
+
+{% endblock %}

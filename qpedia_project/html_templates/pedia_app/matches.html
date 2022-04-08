@@ -7,7 +7,6 @@
 	<div class="alert alert-success alert-dismissible fade show" role="alert">
 		<strong>{{msg}}</strong>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-			{% comment %} <span aria-hidden="true">&times;</span> {% endcomment %}
 		</button>
 	</div>
 	{% endfor %}
@@ -34,7 +33,7 @@
 					{% if match.team1.logo %}
 						<img src="{{ match.team1.logo.url }}" alt="" class="team-logo" width="28" height="28px">
 					{% else %}
-						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
 					{% endif %}
 					{{ match.team1.name }} 
 				</td>
@@ -44,7 +43,7 @@
 					{% if match.team2.logo %}
 						<img src="{{ match.team2.logo.url }}" alt="" class="team-logo" width="28" height="28px">
 					{% else %}
-						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
 					{% endif %}
 					{{ match.team2.name }} 
 				</td>

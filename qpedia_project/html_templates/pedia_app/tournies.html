@@ -2,7 +2,13 @@
 {% load static %}
 
 {% block body%}
-	<br>
+	{% for msg in messages %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<strong>{{msg}}</strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+		</button>
+	</div>
+	{% endfor %}
 	
 <div class="container">
 	<br>
@@ -25,15 +31,15 @@
 				<td>{{ tourney.tier }} </td>
 				<td>
 					{% if tourney.logo %}
-						<img src="{{ tourney.logo.url }}" alt="" class="Tournament-logo" width="28" height="28px">
+						<img src="{{ tourney.logo.url }}" alt="" class="Tournament-logo" width="28px" height="28px">
 					{% else %}
-						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder">
+						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
 					{% endif %}
 					{{ tourney.name }} 
 				</td>
 				<td>{{ tourney.region }} </td>
-				<td>{{ tourney.date_start }} </td>
-				<td>{{ tourney.date_end }} </td>
+				<td>{{ tourney.date_start | date:"d M Y" }} - {{ tourney.date_start | time:"H:i" }}</td>
+				<td>{{ tourney.date_end | date:"d M Y" }} - {{ tourney.date_end | time:"H:i" }}</td>
 				<td>{{ tourney.date_start | timeuntil }} </td>
 			</tr>
 			{% endfor %}

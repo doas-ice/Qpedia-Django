@@ -27,6 +27,11 @@ def tournies(request):
 	context = {'tournies':tournies}
 	return render(request, 'pedia_app/tournies.html', context)
 
+def players(request):
+	players = models.Players.objects.all().order_by('name')
+	context = {'players':players}
+	return render(request, 'pedia_app/players.html', context)
+
 def edit_matches(request):
 	tourney = models.Tournies.objects.all().order_by('date_start')
 	teams = models.Teams.objects.all().order_by('name')
@@ -109,12 +114,35 @@ def edit_tournies(request):
 		return redirect('edit_tournies')
 	return render(request, 'pedia_app/edit_tournies.html', context)
 
+def edit_players(request):
+	players = models.Players.objects.all().order_by('name')
+	teams = models.Teams.objects.all().order_by('name')
+	context = {'players':players, 'teams':teams}
+	if request.method == 'POST':
+		players = models.Players()
+		name = request.POST.get('name')
+		players.name = name
+		players.country = request.POST.get('country')
+		players.age = request.POST.get('age')
+		players.ign = request.POST.get('ign')
+		team_id = request.POST.get('team')
+		team = models.Teams.objects.get(pk=team_id)
+		players.team = team
+
+		if len(request.FILES) != 0:
+			players.photo = request.FILES['photo']
+
+		players.save()
+		messages.success(request, "Player "+name+" Added!")
+		return redirect('edit_players')
+	return render(request, 'pedia_app/edit_players.html', context)
+
 def edit_match(request, match_id):
 	match = models.Matches.objects.get(pk=match_id)
 	tourney = models.Tournies.objects.all().order_by('date_start')
 	teams = models.Teams.objects.all().order_by('name')
 	# frtime = datetime.strptime(match.time), '%Y-%m-%d %H:%M').strftime('%d/%m/%Y, %I:%M %p')
-	frtime = match.time.strftime('%d/%m/%Y, %I:%M %p')
+	frtime = match.time.strftime('%d/%m/%Y, %I:%M %p') #Formatted Time
 	context = {'match':match, 'teams':teams, 'tourney':tourney, 'frtime':frtime}
 	if request.method == 'POST':
 		match.tourney = models.Tournies.objects.get(pk=request.POST.get('tourney'))
@@ -164,6 +192,8 @@ def edit_team(request, team_id):
 
 def edit_tourney(request, tourney_id):
 	tourney = models.Tournies.objects.get(pk=tourney_id)
+	frdate_start = tourney.date_start.strftime('%d/%m/%Y, %I:%M %p') 
+	frdate_end = tourney.date_end.strftime('%d/%m/%Y, %I:%M %p') 
 	if request.method == 'POST':
 		if len(request.FILES) != 0:
 			if len(tourney.logo) > 0:
@@ -179,8 +209,29 @@ def edit_tourney(request, tourney_id):
 		tourney.save()
 		messages.success(request, "Tournament entry updated!")
 		return redirect('edit_tournies')
-	context = {'tourney':tourney}
+	context = {'tourney':tourney, 'frdate_start':frdate_start, 'frdate_end':frdate_end}
 	return render(request, 'pedia_app/edit_tourney.html', context)
+
+def edit_player(request, player_id):
+	player = models.Players.objects.get(pk=player_id)
+	teams = models.Teams.objects.all().order_by('name')
+	if request.method == 'POST':
+		if len(request.FILES) != 0:
+			if len(player.photo) > 0:
+				os.remove(player.photo.path)
+			player.photo = request.FILES['photo']
+		player.name = request.POST.get('name')
+		player.country = request.POST.get('country')
+		player.age = request.POST.get('age')
+		player.ign = request.POST.get('ign')
+		team = models.Teams.objects.get(pk=team)
+		player.team = team
+
+		player.save()
+		messages.success(request, "Player entry updated!")
+		return redirect('edit_players')
+	context = {'player':player, 'teams':teams}
+	return render(request, 'pedia_app/edit_player.html', context)
 
 def delete_match(request, match_id):
 	match = models.Matches.objects.get(pk=match_id)
@@ -203,3 +254,11 @@ def delete_tourney(request, tourney_id):
 	tourney.delete()
 	messages.success(request, "Successfuly deleted the tournament entry")
 	return redirect('edit_tournies')
+
+def delete_player(request, player_id):
+	player = models.Players.objects.get(pk=player_id)
+	if player.photo:
+		os.remove(player.photo.path)
+	player.delete()
+	messages.success(request, "Successfuly deleted the Player entry")
+	return redirect('edit_players')

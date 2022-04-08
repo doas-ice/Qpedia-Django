@@ -11,28 +11,19 @@
 	</div>
 	{% endfor %}
 
-{% for msg in messages %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-	<strong>{{msg}}</strong>
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-	</button>
-</div>
-{% endfor %}
-
 <section>
-<h1 class="text-center">Add a new tournament</h1>
+<h1 class="text-center">Edit tournament</h1>
 <div class="container">
 	<form class="" method='post' enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class="row">
 		<div class="col">
 		<label for="exampleFormControlInput1" class="form-label">Tournament Name</label>
-		<input name='name' class="form-control" placeholder="Tournament Name" aria-label="Tournament Name">
+		<input name='name' class="form-control" placeholder="Tournament Name" aria-label="Tournament Name" value="{{ tourney.name }}">
 		<br>
 		<label for="exampleFormControlInput1" class="form-label">Tournament Tier</label>
-		<select class="form-select" aria-label="Regions" name="tier">
-		<option disabled selected>Choose a Tier</option>
+		<select class="form-select" aria-label="Tier" name="tier">
+		<option disabled selected>{{ tourney.tier }}</option>
 		<option value="S">S</option>
 		<option value="A">A</option>
 		<option value="B">B</option>
@@ -42,7 +33,7 @@
 		<label for="exampleFormControlTextarea1" class="form-label">Region</label>
 		<br>
 		<select class="form-select" aria-label="Regions" name="region">
-		<option disabled selected>Choose a region</option>
+		<option disabled selected>{{ tourney.region }}</option>
 		<option value="America">America</option>
 		<option value="Europe">Europe</option>
 		<option value="Ocenia">Ocenia</option>
@@ -65,6 +56,7 @@
 				type='text'
 				class='form-control'
 				data-td-target='#datetimepicker1'
+				value="{{ frdate_start }}"
 			/>
 			<span
 				class='input-group-text'
@@ -94,6 +86,7 @@
 				type='text'
 				class='form-control'
 				data-td-target='#datetimepicker2'
+				value="{{ frdate_end }}"
 			/>
 			<span
 				class='input-group-text'
@@ -124,72 +117,6 @@
 
 </section>
 
-	<br>
-	<br>
-	<br>
-	
-<div class="container">
-	<div class="bd-example">
-	<h1 class="text-center">Edit an existing Tournament</h1>
-		<table class="table table-hover">
-		<thead>
-			<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Tier</th>
-			<th scope="col">Tournament</th>
-			<th scope="col">Region</th>
-			<th scope="col">Starting Date</th>
-			<th scope="col">End Date</th>
-			<th scope="col">Time Left</th>
-			<th scope="col">Edit</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for tourney in tournies %}
-			<tr>
-				<td>{{ tourney.id }} </td>
-				<td>{{ tourney.tier }} </td>
-				<td>
-					{% if tourney.logo %}
-						<img src="{{ tourney.logo.url }}" alt="" class="Tournament-logo" width="28" height="28px">
-					{% else %}
-						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
-					{% endif %}
-					{{ tourney.name }} 
-				</td>
-				<td>{{ tourney.region }} </td>
-				<td>{{ tourney.date_start }} </td>
-				<td>{{ tourney.date_end }} </td>
-				<td>{{ tourney.date_start | timeuntil }} </td>
-				<td>
-					<a href="{% url 'edit_tourney' tourney.id %}" class="btn btn-outline-success">Edit</a>
-					<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEntry{{ tourney.id }}">Delete</button>
-						<!-- Modal -->
-						<div class="modal fade" id="deleteEntry{{ tourney.id }}" tabindex="-1" aria-labelledby="deleteTournamentEntry" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="deleteTournamentEntry">Delete this entry?</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								Are you sure you want to permanently delete this entry? <br>
-								Tournament Name: {{ tourney.name }}
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
-								<a class="btn btn-danger" href="{% url 'delete_tourney' tourney.id %}">Delete</a>
-							</div>
-							</div>
-						</div>
-						</div>
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-		</table>
-	</div>
-</div>
 </div>
 
 {% endblock %}
