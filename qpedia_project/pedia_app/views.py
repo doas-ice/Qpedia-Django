@@ -41,10 +41,25 @@ def edit_matches(request):
 		t2 = models.Teams.objects.get(pk=team2)
 		matches.team1 = t1
 		matches.team2 = t2
-		matches.score1 = request.POST.get('score1')
-		matches.score2 = request.POST.get('score2')
+		score1 = request.POST.get('score1')
+		score2 = request.POST.get('score2')
+		matches.score1 = score1
+		matches.score2 = score2
 		time = request.POST.get('time')
-		matches.time = datetime.strptime(time, '%d/%m/%Y, %I:%M %p').strftime('%Y-%m-%d %H:%M')
+		matches.time = datetime.strptime(time + ' +0600', '%d/%m/%Y, %I:%M %p %z').strftime('%Y-%m-%d %H:%M%z')
+		status = request.POST.get('status')
+		if status == 'on':
+			status = True
+		else:
+			status = False
+		matches.is_finished = status
+		if status == True:
+			if score1 > score2:
+				matches.winner = 'T1'
+			elif score2 > score1:
+				matches.winner = 'T2'
+			else:
+				matches.winner = 'DW'
 		matches.save()
 		messages.success(request, "Match between "+t1.name+" and "+t2.name+" Added!")
 		return redirect('edit_matches')
@@ -98,17 +113,34 @@ def edit_match(request, match_id):
 	match = models.Matches.objects.get(pk=match_id)
 	tourney = models.Tournies.objects.all().order_by('date_start')
 	teams = models.Teams.objects.all().order_by('name')
-	context = {'match':match, 'teams':teams, 'tourney':tourney}
+	# frtime = datetime.strptime(match.time), '%Y-%m-%d %H:%M').strftime('%d/%m/%Y, %I:%M %p')
+	frtime = match.time.strftime('%d/%m/%Y, %I:%M %p')
+	context = {'match':match, 'teams':teams, 'tourney':tourney, 'frtime':frtime}
 	if request.method == 'POST':
 		match.tourney = models.Tournies.objects.get(pk=request.POST.get('tourney'))
 		team1 = request.POST.get('team1')
 		team2 = request.POST.get('team2')
 		match.team1 = models.Teams.objects.get(pk=team1)
 		match.team2 = models.Teams.objects.get(pk=team2)
-		match.score1 = request.POST.get('score1')
-		match.score2 = request.POST.get('score2')
+		score1 = request.POST.get('score1')
+		score2 = request.POST.get('score2')
+		match.score1 = score1
+		match.score2 = score2
 		time = request.POST.get('time')
-		match.time = datetime.strptime(time, '%d/%m/%Y, %I:%M %p').strftime('%Y-%m-%d %H:%M')
+		match.time = datetime.strptime(time + ' +0600', '%d/%m/%Y, %I:%M %p %z').strftime('%Y-%m-%d %H:%M%z')
+		status = request.POST.get('status')
+		if status == 'on':
+			status = True
+		else:
+			status = False
+		match.is_finished = status
+		if status == True:
+			if score1 > score2:
+				match.winner = 'T1'
+			elif score2 > score1:
+				match.winner = 'T2'
+			else:
+				match.winner = 'DW'
 		match.save()
 		messages.success(request, "Match entry updated!")
 		return redirect('edit_matches')

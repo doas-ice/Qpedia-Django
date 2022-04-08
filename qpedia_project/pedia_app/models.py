@@ -38,3 +38,11 @@ class Matches(models.Model):
 	time = models.DateTimeField()
 	is_finished = models.BooleanField(default=False)
 	winner = models.CharField(max_length=2, choices=WINNER_CHOICES, default=ON)
+
+class Players(models.Model):
+	name = models.CharField(max_length=100)
+	country = models.CharField(max_length=100)
+	age = models.IntegerField()
+	ign = models.CharField(max_length=100)
+	team = models.ForeignKey(Teams, on_delete=models.SET_NULL, null=True)
+	photo = models.ImageField(upload_to='players/uploads/', null=True, blank=True)
