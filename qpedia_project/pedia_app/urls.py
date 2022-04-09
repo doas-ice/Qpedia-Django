@@ -6,6 +6,9 @@ from pedia_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('register/', views.register_req, name='register'),
+    path('login/', views.login_req, name='login'),
+    path('logout/', views.logout_req, name='logout'),
     path('teams/', views.teams, name='teams'),
     path('matches/', views.matches, name='matches'),
     path('tournies/', views.tournies, name='tournies'),
