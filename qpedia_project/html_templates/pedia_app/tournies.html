@@ -2,37 +2,110 @@
 {% load static %}
 
 {% block body%}
-	<h1 class="text-center">All Tournaments</h1>
-	<table class="table">
-	<thead>
-		<tr>
-		<th scope="col">Tier</th>
-		<th scope="col">Tournament</th>
-		<th scope="col">Region</th>
-		<th scope="col">Starting Date</th>
-		<th scope="col">End Date</th>
-		<th scope="col">Time Left</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for tourney in tournies %}
-		<tr>
-			<td>{{ tourney.tier }} </td>
-			<td>
-				{% if tourney.logo %}
-					<img src="{{ tourney.logo.url }}" alt="" class="Tournament-logo" width="28px" height="28px">
-				{% else %}
-					<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
-				{% endif %}
-				{{ tourney.name }} 
-			</td>
-			<td>{{ tourney.region }} </td>
-			<td>{{ tourney.date_start | date:"d M Y" }} - {{ tourney.date_start | time:"H:i" }}</td>
-			<td>{{ tourney.date_end | date:"d M Y" }} - {{ tourney.date_end | time:"H:i" }}</td>
-			<td>{{ tourney.date_start | timeuntil }} </td>
-		</tr>
-		{% endfor %}
-	</tbody>
-	</table>
+
+
+{% for tourney in tournies %}
+<div class="card">
+	<div class="card-content has-background-light">
+		<div class="content">
+			<div class="columns is-centerd">
+				<!-- <div class="column is-1"></div> -->
+				<div class="column is-narrow has-text-centered">
+					
+					{% if tourney.tier == 'S' %}
+						<span class="tag is-danger">
+							{{ tourney.tier }}
+						</span>
+					{% elif tourney.tier == 'A' %}
+						<span class="tag is-success">
+							{{ tourney.tier }}
+						</span>
+					{% elif tourney.tier == 'B' %}
+						<span class="tag is-link">
+							{{ tourney.tier }}
+						</span>
+					{% elif tourney.tier == 'C' %}
+						<span class="tag is-warning">
+							{{ tourney.tier }}
+						</span>
+					{% endif %}
+						
+				</div>
+				<div class="column is-2 has-text-left is-success">
+					<span class="icon-text">
+						<span class="icon">
+							{% if tourney.logo %}
+								<img src="{{ tourney.logo.url }}" alt="">
+							{% else %}
+								<img src="{% static 'images/logo_placeholder.png' %}">
+							{% endif %}
+						</span>
+						<span>
+							<strong>
+								&nbsp;
+							{{ tourney.name }} 
+							</strong>
+						</span>
+					</span>
+				</div>
+				<div class="column"></div>
+				<div class="column is-narrow has-text-centered is-success">
+					<p>
+						{{ tourney.date_start | date:"d M Y" }}
+						{{ tourney.date_start | time:"H:i" }}
+					</p>
+				</div>
+				<div class="column is-narrow has-text-centered">
+						to
+				</div>
+				<div class="column is-narrow has-text-centered">
+					<p>
+						{{ tourney.date_end | date:"d M Y" }}
+						{{ tourney.date_end | time:"H:i" }}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="card-footer">
+		<div class="card-footer-item has-background-link"><strong style="color: white;">{{ tourney.region }}</strong></div>
+
+		<div class="card-footer-item has-background-info"><p style="color: white;">{{ tourney.date_start | timeuntil }}</p></div>
+			{% if tourney.is_finished %}
+				<div class="card-footer-item has-text-white has-background-success">		
+					<span class="icon-text">
+						<span class="icon">
+							{% if tourney.winner.logo %}
+								<img src="{{ tourney.winner.logo.url }}" alt="">
+							{% else %}
+								<img src="{% static 'images/logo_placeholder.png' %}">
+							{% endif %}
+						</span>
+						<span>
+								&nbsp;
+								<strong style="color: white;">
+							{{ tourney.winner.name }} 
+								</strong>
+								&nbsp;
+								&nbsp;
+						</span>
+						<span class="icon">
+							<i class="fas fa-crown" style="color: darkorange;"></i>
+						</span>
+					</span>
+				</div>
+
+			{% else %}
+
+				<div class="card-footer-item has-text-white has-background-danger"><strong style="color: white;">		
+						Ongoing
+						</strong>
+				</div>
+				
+			{% endif %}
+	</footer>
+</div>
+<br>
+{% endfor %}
 
 {% endblock %}

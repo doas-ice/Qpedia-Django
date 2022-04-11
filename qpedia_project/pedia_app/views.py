@@ -165,7 +165,7 @@ def edit_tournies(request):
 
 @login_required(login_url='login')
 def edit_players(request):
-	players = models.Players.objects.all().order_by('name')
+	players = models.Players.objects.all().order_by('rank')
 	teams = models.Teams.objects.all().order_by('name')
 	context = {'players':players, 'teams':teams}
 	if request.method == 'POST':
@@ -178,6 +178,7 @@ def edit_players(request):
 		team_id = request.POST.get('team')
 		team = models.Teams.objects.get(pk=team_id)
 		players.team = team
+		players.rank = request.POST.get('rank')
 
 		if len(request.FILES) != 0:
 			players.photo = request.FILES['photo']
@@ -291,6 +292,7 @@ def edit_player(request, player_id):
 		player.ign = request.POST.get('ign')
 		team = models.Teams.objects.get(pk=team)
 		player.team = team
+		players.rank = request.POST.get('rank')
 
 		player.save()
 		messages.success(request, "Player entry updated!")

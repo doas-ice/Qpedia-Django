@@ -6,7 +6,7 @@
 
 {% for match in matches %}
 <div class="card">
-	<header class="card-header has-background-link">
+	<header class="card-header has-background-link-dark">
 		<div class="card-header-title level">
 			<div class="level-left">
 				<div class="level-item">
@@ -31,10 +31,10 @@
 			</div>
 		</div>
 	</header>
-	<div class="card-content">
+	<div class="card-content has-background-light">
 		<div class="content">
 			<div class="columns is-centerd">
-				<div class="column is-3"></div>
+				<div class="column is-2"></div>
 				<div class="column has-text-centered">
 					<span class="icon-text">
 						<span class="icon">
@@ -45,7 +45,10 @@
 							{% endif %}
 						</span>
 						<span>
+						<strong>
+								&nbsp;
 							{{ match.team1.name }} 
+						</strong>
 							{% if match.winner == 'T1' %}
 								&nbsp;
 								&nbsp;
@@ -58,13 +61,19 @@
 					</span>
 				</div>
 				<div class="column is-narrow has-text-centered is-success">
-					{{ match.score1 }}
+					<strong>
+						{{ match.score1 }}
+					</strong>
 				</div>
 				<div class="column is-narrow has-text-centered">
-					vs
+					<strong>
+						vs
+					</strong>
 				</div>
 				<div class="column is-narrow has-text-centered">
-					{{ match.score2 }}
+					<strong>
+						{{ match.score2 }}
+					</strong>
 				</div>
 				<div class="column has-text-centered" >
 					<span class="icon-text">
@@ -77,7 +86,10 @@
 								&nbsp;
 								&nbsp;
 							{% endif %}
+							<strong>
 							{{ match.team2.name }} 
+								&nbsp;
+							</strong>
 						</span>
 						<span class="icon">
 							{% if match.team2.logo %}
@@ -88,7 +100,7 @@
 						</span>
 					</span>
 				</div>
-				<div class="column is-3"></div>
+				<div class="column is-2"></div>
 			</div>
 		</div>
 	</div>

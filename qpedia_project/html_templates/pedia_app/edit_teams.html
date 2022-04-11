@@ -2,100 +2,186 @@
 {% load static %}
 
 {% block body%}
-<h1 class="text-center">Add a new team</h1>
-<div class="container">
-	<form class="" method='post' enctype="multipart/form-data">
+<h1 class="title is-centered has-text-centered">Add a new team entry</h1>
+<form method='post' enctype="multipart/form-data">
 	{% csrf_token %}
-	<div class="row">
-		<div class="col">
-		<label for="exampleFormControlInput1" class="form-label">Team Name</label>
-		<input name='name' class="form-control" placeholder="Team Name" aria-label="Team Name">
-		<br>
-		<label for="exampleFormControlInput1" class="form-label">Team Rank</label>
-		<input name='rank' class="form-control" id="exampleFormControlInput1" type="number" step="1" max="1000" value="1">
-		<br>
-		<label for="exampleFormControlTextarea1" class="form-label">Region</label>
-		<br>
-		<select class="form-select" aria-label="Regions" name="region">
-		<option disabled selected>Choose a region</option>
-		<option value="America">America</option>
-		<option value="Europe">Europe</option>
-		<option value="Ocenia">Ocenia</option>
-		<option value="Asia">Asia</option>
-		<option value="Africa">Africa</option>
-		<option value="International">International</option>
-		</select>
-		<br>
-		<div class="mb-3">
-		<label for="formFile" class="form-label">Upload a logo</label>
-		<input class="form-control" name="logo" type="file" id="formFile">
-		</div>
-		<br>
-		<div class="mt-2">
-			<input class="btn btn-primary" type="submit" value="Submit">
-		</div>
+	<div class="field">
+		<label class="label">Team Name</label>
+		<div class="control">
+			<input name='name' class="input" placeholder="Team Name" aria-label="Team Name">
 		</div>
 	</div>
-	</form>
+	<div class="field">
+		<label class="label">Team Rank</label>
+		<div class="control">
+			<input name='rank' class="input" type="number" value="1" step="1" max="2000" aria-label="Team Rank">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Team Region</label>
+		<div class="control">
+			<div class="select">
+				<select name="region">
+				<option disabled selected>Choose a region</option>
+				<option value="America">America</option>
+				<option value="Europe">Europe</option>
+				<option value="Ocenia">Ocenia</option>
+				<option value="Asia">Asia</option>
+				<option value="Africa">Africa</option>
+				<option value="International">International</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<div class="label">Team Logo</div>
+		<div class="control">
+			<div id="file-js-logo" class="file has-name is-fullwidth">
+				<label class="file-label">
+					<input class="file-input" type="file" name="logo">
+					<span class="file-cta">
+					<span class="file-icon">
+						<i class="fas fa-upload"></i>
+					</span>
+					<span class="file-label">
+						Upload a logo...
+					</span>
+					</span>
+					<span class="file-name">
+						e.g. logo.png
+					</span>
+				</label>
+			</div>
+			<script>
+			const fileInput = document.querySelector('#file-js-logo input[type=file]');
+			fileInput.onchange = () => {
+				if (fileInput.files.length > 0) {
+				const fileName = document.querySelector('#file-js-logo .file-name');
+				fileName.textContent = fileInput.files[0].name;
+				}
+			}
+			</script>
+		</div>
+	</div>
+	<br>
+	<div class="field">
+		<div class="control">
+			<input class="button is-primary" type="submit" value="Submit"></input>
+		</div>
+	</div>
+</form>
 
 	<br>
 	<br>
 	<br>
 	
+<div class="container">
 	<div class="bd-example">
-	<h1 class="text-center">Edit an existing team</h1>
-		<table class="table table-hover">
-		<thead>
-			<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Rank</th>
-			<th scope="col">Team</th>
-			<th scope="col">Region</th>
-			<th scope="col">Edit</th>
+	<section class="section is-centerd">
+	<h3 class="title is-3 is-centered has-text-centered">Edit an existing Team</h3>
+	<table class="table is-centered has-text-centered is-fullwidth">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Rank</th>
+			<th>Team</th>
+			<th>Region</th>
+			<th>Edit</th>
 			</tr>
-		</thead>
-		<tbody>
-			{% for team in teams %}
-			<tr>
-				<td>{{ team.id }} </td>
-				<td>{{ team.rank }} </td>
-				<td>
-					{% if team.logo %}
-						<img src="{{ team.logo.url }}" alt="" class="team-logo" width="28" height="28px">
-					{% else %}
-						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
-					{% endif %}
-					{{ team.name }} 
-				</td>
-				<td>{{ team.region }} </td>
-				<td>
-					<a href="{% url 'edit_team' team.id %}" class="btn btn-outline-success">Edit</a>
-					<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteEntry{{ team.id }}">Delete</button>
-						<!-- Modal -->
-						<div class="modal fade" id="deleteEntry{{ team.id }}" tabindex="-1" aria-labelledby="deleteTeamEntry" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="deleteTeamEntry">Delete this entry?</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								Are you sure you want to permanently delete this entry? <br>
-								Team Name: {{ team.name }}
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
-								<a class="btn btn-danger" href="{% url 'delete_team' team.id %}">Delete</a>
-							</div>
-							</div>
+	</thead>
+	<tbody>
+		{% for team in teams %}
+		<tr>
+			<td>{{ team.id }} </td>
+			<td>{{ team.rank }} </td>
+			<td>
+				<span class="icon-text">
+					<span class="icon">
+						{% if team.logo %}
+							<img src="{{ team.logo.url }}">
+						{% else %}
+							<img src="{% static 'images/logo_placeholder.png' %}">
+						{% endif %}
+					</span>
+					<span>
+						{{ team.name }} 
+					</span>
+					</span>
+			</td>
+			<td>{{ team.region }} </td>
+			<td>
+				<a href="{% url 'edit_team' team.id %}" class="button is-primary is-small is-outlined">Edit</a>
+				<button class="js-modal-trigger button is-danger is-small is-outlined" data-target="deleteEntry{{ team.id }}">Delete</button>
+					<!-- Modal -->
+					<div class="modal" id="deleteEntry{{ team.id }}">
+						<div class="modal-background"></div>
+						<div class="modal-card">
+						<header class="modal-card-head">
+							<p class="modal-card-title">Delete this entry?</p>
+							<button class="delete" aria-label="close"></button>
+						</header>
+						<section class="modal-card-body">
+							Are you sure you want to permanently delete the	team {{ team.name }}
+						</section>
+						<footer class="modal-card-foot">
+							<button type="button" class="modal-close button is-outlined is-dark" aria-label="close">Keep</button>
+							<a class="button is-danger" href="{% url 'delete_team' team.id %}">Delete</a>
+						</footer>
 						</div>
-						</div>
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-		</table>
-	</div>
-</div>
+					</div>
+					<script type="text/javascript">
+						document.addEventListener('DOMContentLoaded', () => {
+						// Functions to open and close a modal
+						function openModal($el) {
+							$el.classList.add('is-active');
+						}
 
+						function closeModal($el) {
+							$el.classList.remove('is-active');
+						}
+
+						function closeAllModals() {
+							(document.querySelectorAll('.modal') || []).forEach(($modal) => {
+							closeModal($modal);
+							});
+						}
+
+						// Add a click event on buttons to open a specific modal
+						(document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+							const modal = $trigger.dataset.target;
+							const $target = document.getElementById(modal);
+							console.log($target);
+
+							$trigger.addEventListener('click', () => {
+							openModal($target);
+							});
+						});
+
+						// Add a click event on various child elements to close the parent modal
+						(document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+							const $target = $close.closest('.modal');
+
+							$close.addEventListener('click', () => {
+							closeModal($target);
+							});
+						});
+
+						// Add a keyboard event to close all modals
+						document.addEventListener('keydown', (event) => {
+							const e = event || window.event;
+
+							if (e.keyCode === 27) { // Escape key
+							closeAllModals();
+							}
+						});
+						});
+					</script>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+	</section>
+</div>
+</div>
 {% endblock %}

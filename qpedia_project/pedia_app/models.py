@@ -46,3 +46,4 @@ class Players(models.Model):
 	ign = models.CharField(max_length=100)
 	team = models.ForeignKey(Teams, on_delete=models.SET_NULL, null=True, blank=True)
 	photo = models.ImageField(upload_to='players/uploads/', null=True, blank=True)
+	rank = models.IntegerField()

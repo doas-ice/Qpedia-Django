@@ -64,6 +64,7 @@
   </head>
   <body>
     {% include 'pedia_app/navigation.html'%} 
+	{% load static %}
 
 	{% for msg in messages %}
 	
@@ -84,23 +85,98 @@
 	
 	{% block column %}
 
-		<br>
-		<br>
-		<br>
+	<br>
+	<br>
+	<br>
 
 		<div class="columns">
+			<div class="column is-1"></div>
 			<div class="column is-2">
-				Left Bar
+				<div class="column">
+					<table class="table is-centered is-fullwidth">
+					<thead>
+						<tr class="has-background-link">
+							<th colspan="2" class="has-text-white has-text-centered">
+								Top Players
+							</th>
+						</tr>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							</tr>
+					</thead>
+					<tbody>
+						{% for player in rankplayers %}
+						<tr>
+							<td>{{ player.rank }} </td>
+							<td>
+								<span class="icon-text">
+									<span class="icon">
+										{% if player.logo %}
+											<img src="{{ player.photo.url }}">
+										{% else %}
+											<img src="{% static 'images/photo_placeholder.png' %}">
+										{% endif %}
+									</span>
+									<span>
+										{{ player.name }} 
+									</span>
+									</span>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+					</table>
+				</div>
 			</div>
 
-			<div class="column is-8">
+			<div class="column is-6">
+
+				<br>
+
 				{% block body %}
 				{% endblock %}
 			</div>
 
 			<div class="column is-2">
-				Right Bar
+				<div class="column">
+					<table class="table is-centered is-fullwidth">
+					<thead>
+						<tr class="has-background-link">
+							<th colspan="2" class="has-text-white has-text-centered">
+								Top Teams
+							</th>
+						</tr>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							</tr>
+					</thead>
+					<tbody>
+						{% for team in rankteams %}
+						<tr>
+							<td>{{ team.rank }} </td>
+							<td>
+								<span class="icon-text">
+									<span class="icon">
+										{% if team.logo %}
+											<img src="{{ team.logo.url }}">
+										{% else %}
+											<img src="{% static 'images/logo_placeholder.png' %}">
+										{% endif %}
+									</span>
+									<span>
+										{{ team.name }} 
+									</span>
+									</span>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+					</table>
+				</div>
 			</div>
+			<div class="column is-1"></div>
 		</div>
 		
 	{% endblock column %}

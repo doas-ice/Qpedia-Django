@@ -2,46 +2,90 @@
 {% load static %}
 
 {% block body%}
-<section>
-<h1 class="text-center">Edit player entry</h1>
-<div class="container">
-	<form class="" method='post' enctype="multipart/form-data">
+<h1 class="title is-centered has-text-centered">Edit an existing player entry</h1>
+<form method='post' enctype="multipart/form-data">
 	{% csrf_token %}
-	<div class="row">
-		<div class="col">
-		<label for="exampleFormControlInput1" class="form-label">Player Name</label>
-		<input name='name' class="form-control" placeholder="Player Name" aria-label="Player Name" value="{{ player.name }}">
-		<br>
-		<label for="exampleFormControlInput1" class="form-label">Player IGN</label>
-		<input name='ign' class="form-control" placeholder="Player IGN" aria-label="Player IGN" value="{{ player.ign }}">
-		<br>
-		<label for="exampleFormControlInput1" class="form-label">Country</label>
-		<input name='country' class="form-control" placeholder="Country" aria-label="Player Country" value="{{ player.country }}">
-		<br>
-		<input name='age' class="form-control" id="exampleFormControlInput1" type="number" step="1" max="200" value="{{ player.age }}">
-		<br>
-		<select class="form-select" aria-label="Team" name="team">
-		<option disabled selected value="{{ player.team.id }}">{{ player.team.name }}</option>
-		{% for t in teams %}
-		<option value="{{ t.id }}">{{ t.name }}</option>
-		{% endfor %}
-		</select>
-		<br>
-		<div class="mb-3">
-		<label for="formFile" class="form-label">Upload player photo</label>
-		<input class="form-control" name="photo" type="file" id="formFile">
-		</div>
-		<br>
-		<div class="mt-2">
-			<input class="btn btn-primary" type="submit" value="Submit">
-		</div>
+	<div class="field">
+		<label class="label">Player Name</label>
+		<div class="control">
+			<input name='name' class="input" placeholder="Player Name" aria-label="Player Name" value="{{ player.name }}">
 		</div>
 	</div>
-	</form>
-
-</section>
-
-</div>
-</div>
+	<div class="field">
+		<label class="label">Player IGN</label>
+		<div class="control">
+			<input name='ign' class="input" placeholder="Player IGN" aria-label="Player IGN" value="{{ player.ign }}">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Player Country</label>
+		<div class="control">
+			<input name='country' class="input" placeholder="Country" aria-label="Player Country" value="{{ player.country }}">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Player Age</label>
+		<div class="control">
+			<input name='age' class="input" type="number" value="18" step="1" max="200" aria-label="Player Age" value="{{ player.age }}">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Player Rank</label>
+		<div class="control">
+			<input name='rank' class="input" type="number" value="1" step="1" max="2000" aria-label="Player Rank" value="{{ player.rank }}">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Player Team</label>
+		<div class="control">
+			<div class="select">
+				<select name="team">
+				<option disabled selected value="{{ player.team.id }}">
+					{{ player.team.name }}
+				</option>
+				{% for t in teams %}
+				<option value="{{ t.id }}">{{ t.name }}</option>
+				{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<div class="label">Player Photo</div>
+		<div class="control">
+			<div id="file-js-photo" class="file has-name is-fullwidth">
+				<label class="file-label">
+					<input class="file-input" type="file" name="photo">
+					<span class="file-cta">
+					<span class="file-icon">
+						<i class="fas fa-upload"></i>
+					</span>
+					<span class="file-label">
+						Upload a photo…
+					</span>
+					</span>
+					<span class="file-name">
+						e.g. photo.png
+					</span>
+				</label>
+			</div>
+			<script>
+			const fileInput = document.querySelector('#file-js-photo input[type=file]');
+			fileInput.onchange = () => {
+				if (fileInput.files.length > 0) {
+				const fileName = document.querySelector('#file-js-photo .file-name');
+				fileName.textContent = fileInput.files[0].name;
+				}
+			}
+			</script>
+		</div>
+	</div>
+	<br>
+	<div class="field">
+		<div class="control">
+			<input class="button is-primary" type="submit" value="Submit"></input>
+		</div>
+	</div>
+</form>
 
 {% endblock %}
