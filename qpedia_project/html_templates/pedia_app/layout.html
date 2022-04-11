@@ -60,13 +60,23 @@
 		}
 	</style>
 
-    <title>Qpedia</title>
+	{% load static %}
+
+	
+	{% block title %}
+		<title>Qpedia - Everything Esports</title>
+	{% endblock title %}
+		
+	<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
   </head>
   <body>
     {% include 'pedia_app/navigation.html'%} 
 	{% load static %}
 
 	{% for msg in messages %}
+	<br>
+	<br>
+	<br>
 	
 		{% if msg.tags == 'error' %}
 			<article class="message is-danger">
@@ -112,14 +122,18 @@
 							<td>
 								<span class="icon-text">
 									<span class="icon">
-										{% if player.logo %}
-											<img src="{{ player.photo.url }}">
+										{% if player.photo %}
+										<figure class="image">
+											<img class="is-rounded" src="{{ player.photo.url }}">
+										</figure>
 										{% else %}
-											<img src="{% static 'images/photo_placeholder.png' %}">
+											<img class="is-rounded" src="{% static 'images/photo_placeholder.png' %}">
 										{% endif %}
 									</span>
 									<span>
-										{{ player.name }} 
+										&nbsp;
+										&nbsp;
+										{{ player.ign }} 
 									</span>
 									</span>
 							</td>
@@ -177,8 +191,8 @@
 				</div>
 			</div>
 			<div class="column is-1"></div>
-		</div>
-		
+	</div>
+			
 	{% endblock column %}
 
   </body>

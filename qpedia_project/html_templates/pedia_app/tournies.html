@@ -1,6 +1,10 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
+{% block title %}
+		<title>Qpedia - Tournaments</title>
+{% endblock title %}
+
 {% block body%}
 
 
@@ -31,7 +35,7 @@
 					{% endif %}
 						
 				</div>
-				<div class="column is-2 has-text-left is-success">
+				<div class="column is-6 has-text-left is-success">
 					<span class="icon-text">
 						<span class="icon">
 							{% if tourney.logo %}

@@ -5,7 +5,7 @@ from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from pedia_app import models
+from pedia_app import models 
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,8 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
-	return render(request, 'pedia_app/index.html')
+	news = models.News.objects.all().order_by('-time')
+	return render(request, 'pedia_app/index.html', {'news':news})
 
 def register_req(request):
 	if request.method == 'POST':
@@ -48,7 +49,7 @@ def logout_req(request):
 	return redirect("index")
 
 def matches(request):
-	matches = models.Matches.objects.all().order_by('time')
+	matches = models.Matches.objects.all().order_by('-time')
 	context = {'matches':matches}
 	return render(request, 'pedia_app/matches.html', context)
 
@@ -58,7 +59,7 @@ def teams(request):
 	return render(request, 'pedia_app/teams.html', context)
 
 def tournies(request):
-	tournies = models.Tournies.objects.all().order_by('date_end')
+	tournies = models.Tournies.objects.all().order_by('-date_start')
 	context = {'tournies':tournies}
 	return render(request, 'pedia_app/tournies.html', context)
 
@@ -189,6 +190,23 @@ def edit_players(request):
 	return render(request, 'pedia_app/edit_players.html', context)
 
 @login_required(login_url='login')
+def edit_news_all(request):
+	news = models.News.objects.all().order_by('-time')
+	context = {'news':news}
+	if request.method == 'POST':
+		news = models.News()
+		news.title = request.POST.get('title')
+		news.body = request.POST.get('body')
+		author_id = request.POST.get('author')
+		news.author = User.objects.get(pk=author_id)
+		if len(request.FILES) != 0:
+			news.banner = request.FILES['banner']
+		news.save()
+		messages.success(request, "News Added!")
+		return redirect('edit_news_all')
+	return render(request, 'pedia_app/edit_news_all.html', context)
+
+@login_required(login_url='login')
 def edit_match(request, match_id):
 	match = models.Matches.objects.get(pk=match_id)
 	tourney = models.Tournies.objects.all().order_by('date_start')
@@ -301,6 +319,24 @@ def edit_player(request, player_id):
 	return render(request, 'pedia_app/edit_player.html', context)
 
 @login_required(login_url='login')
+def edit_news(request, news_id):
+	news = models.News.objects.get(pk=news_id)
+	context = {'news':news}
+	if request.method == 'POST':
+		news.title = request.POST.get('title')
+		news.body = request.POST.get('body')
+		author_id = request.POST.get('author')
+		news.author = User.objects.get(pk=author_id)
+		if len(request.FILES) != 0:
+			if len(news.banner) > 0:
+				os.remove(news.banner.path)
+			news.banner = request.FILES['banner']
+		news.save()
+		messages.success(request, "News Added!")
+		return redirect('edit_news_all')
+	return render(request, 'pedia_app/edit_news.html', context)
+
+@login_required(login_url='login')
 def delete_match(request, match_id):
 	match = models.Matches.objects.get(pk=match_id)
 	match.delete()
@@ -333,3 +369,22 @@ def delete_player(request, player_id):
 	player.delete()
 	messages.success(request, "Successfuly deleted the Player entry")
 	return redirect('edit_players')
+
+@login_required(login_url='login')
+def delete_news(request, news_id):
+	news = models.News.objects.get(pk=news_id)
+	if news.banner:
+		os.remove(news.banner.path)
+	news.delete()
+	messages.success(request, "Successfuly deleted the News entry")
+	return redirect('edit_news_all')
+
+def feedback(request):
+	if request.method == "POST":
+		feed = models.Feedback()
+		feed.name = request.POST.get('name')
+		feed.email = request.POST.get('email')
+		feed.msg = request.POST.get('msg')
+		feed.save()
+		messages.success(request, "Thank for the feedback")
+		return redirect('feedback')

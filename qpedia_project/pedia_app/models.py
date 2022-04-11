@@ -1,5 +1,6 @@
 import os
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -47,3 +48,15 @@ class Players(models.Model):
 	team = models.ForeignKey(Teams, on_delete=models.SET_NULL, null=True, blank=True)
 	photo = models.ImageField(upload_to='players/uploads/', null=True, blank=True)
 	rank = models.IntegerField()
+
+class News(models.Model):
+	title = models.TextField(null=True, blank=True)
+	author = models.ForeignKey(User, on_delete=models.CASCADE)
+	banner = models.ImageField(upload_to='news/uploads/', null=True, blank=True)
+	body = models.TextField(null=True, blank=True)
+	time = models.DateTimeField(auto_now_add=True, blank=True)
+
+class Feedback(models.Model):
+	name = models.TextField(null=True, blank=True)
+	email = models.TextField(null=True, blank=True)
+	msg = models.TextField(null=True, blank=True)

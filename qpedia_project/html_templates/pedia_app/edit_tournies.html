@@ -1,6 +1,21 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
+{% block title %}
+		<title>Qpedia - Edit Tournaments</title>
+{% endblock title %}
+
+
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
 {% block body%}
 <h1 class="title is-centered has-text-centered">Add a new tournament entry</h1>
 <form method='post' enctype="multipart/form-data">
@@ -312,4 +327,9 @@
 </div>
 </div>
 
-{% endblock %}
+{% endblock body %}
+		</div>
+		<div class="column is-2"></div>
+</div>
+
+{% endblock column %}

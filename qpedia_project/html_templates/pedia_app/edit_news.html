@@ -1,0 +1,87 @@
+{% extends "pedia_app/layout.html" %}
+{% load static %}
+
+{% block title %}
+		<title>Qpedia - Edit News</title>
+{% endblock title %}
+
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
+{% block body%}
+<h1 class="title is-centered has-text-centered">Edit an existing news entry</h1>
+<form method='post' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="field">
+		<label class="label">News Title</label>
+		<div class="control">
+			<input name='title' class="input" placeholder="News Title" aria-label="News Title" value="{{ news.title }}">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">News Body</label>
+		<div class="control">
+			<textarea name='body' class="textarea" placeholder="Descriptive news content" aria-label="News Body">{{ news.body }}</textarea>
+		</div>
+	</div>
+	<div class="field" style="visibility: hidden;">
+		<div class="control">
+			<input name='author' class="input" value="{{ user.id }}">
+		</div>
+	</div>
+	<div class="field">
+		<div class="label">News Banner</div>
+		<div class="control">
+			<div id="file-js-photo" class="file has-name is-fullwidth">
+				<label class="file-label">
+					<input class="file-input" type="file" name="banner">
+					<span class="file-cta">
+					<span class="file-icon">
+						<i class="fas fa-upload"></i>
+					</span>
+					<span class="file-label">
+						Upload a banner…
+					</span>
+					</span>
+					<span class="file-name">
+						e.g. banner.jpg
+					</span>
+				</label>
+			</div>
+			<script>
+			const fileInput = document.querySelector('#file-js-photo input[type=file]');
+			fileInput.onchange = () => {
+				if (fileInput.files.length > 0) {
+				const fileName = document.querySelector('#file-js-photo .file-name');
+				fileName.textContent = fileInput.files[0].name;
+				}
+			}
+			</script>
+		</div>
+	</div>
+	<br>
+	<div class="field">
+		<div class="control">
+			<input class="button is-primary" type="submit" value="Submit"></input>
+		</div>
+	</div>
+</form>
+
+	<br>
+	<br>
+	<br>
+	
+{% endblock body %}
+
+		</div>
+		<div class="column is-2"></div>
+</div>
+
+{% endblock column %}

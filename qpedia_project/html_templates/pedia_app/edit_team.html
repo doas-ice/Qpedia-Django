@@ -1,6 +1,20 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
+{% block title %}
+		<title>Qpedia - Edit Team</title>
+{% endblock title %}
+
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
 {% block body%}
 <h1 class="title is-centered has-text-centered">Edit an existing team entry</h1>
 <form method='post' enctype="multipart/form-data">
@@ -14,7 +28,7 @@
 	<div class="field">
 		<label class="label">Team Rank</label>
 		<div class="control">
-			<input name='rank' class="input" type="number" value="1" step="1" max="2000" aria-label="Team Rank" value="{{ team.rank }}">
+			<input name='rank' class="input" type="number" step="1" max="2000" aria-label="Team Rank" value="{{ team.rank }}">
 		</div>
 	</div>
 	<div class="field">
@@ -22,7 +36,7 @@
 		<div class="control">
 			<div class="select">
 				<select name="region">
-				<option disabled selected value="{{ team.region }}">{{ team.region }}</option>
+				<option selected value="{{ team.region }}">{{ team.region }}</option>
 				<option value="America">America</option>
 				<option value="Europe">Europe</option>
 				<option value="Ocenia">Ocenia</option>
@@ -70,4 +84,10 @@
 		</div>
 	</div>
 </form>
-{% endblock %}
+{% endblock body %}
+
+		</div>
+		<div class="column is-2"></div>
+</div>
+
+{% endblock column %}
