@@ -1,4 +1,5 @@
 from cmath import log
+from importlib.metadata import requires
 import re, os
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
@@ -129,7 +130,8 @@ def edit_teams(request):
 @login_required(login_url='login')
 def edit_tournies(request):
 	tournies = models.Tournies.objects.all().order_by('date_start')
-	context = {'tournies':tournies}
+	teams = models.Teams.objects.all()
+	context = {'tournies':tournies, 'teams':teams}
 	if request.method == 'POST':
 		tournies = models.Tournies()
 		name = request.POST.get('name')
@@ -146,6 +148,16 @@ def edit_tournies(request):
 		if len(request.FILES) != 0:
 			tournies.logo = request.FILES['logo']
 
+		status = request.POST.get('status')
+		if status == 'on':
+			status = True
+		else:
+			status = False
+		tournies.is_finished = status
+		winner_id = request.POST.get('winner')
+		if status:
+			winner = models.Teams.objects.get(pk=winner_id)
+			tournies.winner = winner
 		tournies.save()
 		messages.success(request, "Tournament "+name+" Added!")
 		return redirect('edit_tournies')
@@ -233,6 +245,7 @@ def edit_team(request, team_id):
 @login_required(login_url='login')
 def edit_tourney(request, tourney_id):
 	tourney = models.Tournies.objects.get(pk=tourney_id)
+	teams = models.Teams.objects.all()
 	frdate_start = tourney.date_start.strftime('%d/%m/%Y, %I:%M %p') 
 	frdate_end = tourney.date_end.strftime('%d/%m/%Y, %I:%M %p') 
 	if request.method == 'POST':
@@ -247,10 +260,20 @@ def edit_tourney(request, tourney_id):
 		tourney.region = request.POST.get('region')
 		tourney.date_start=datetime.strptime(date_start, '%d/%m/%Y, %I:%M %p').strftime('%Y-%m-%d %H:%M')
 		tourney.date_end=datetime.strptime(date_end, '%d/%m/%Y, %I:%M %p').strftime('%Y-%m-%d %H:%M')
+		status = request.POST.get('status')
+		if status == 'on':
+			status = True
+		else:
+			status = False
+		tourney.is_finished = status
+		winner_id = request.POST.get('winner')
+		if status:
+			winner = models.Teams.objects.get(pk=winner_id)
+			tourney.winner = winner
 		tourney.save()
 		messages.success(request, "Tournament entry updated!")
 		return redirect('edit_tournies')
-	context = {'tourney':tourney, 'frdate_start':frdate_start, 'frdate_end':frdate_end}
+	context = {'tourney':tourney, 'frdate_start':frdate_start, 'frdate_end':frdate_end, 'teams':teams}
 	return render(request, 'pedia_app/edit_tourney.html', context)
 
 @login_required(login_url='login')

@@ -4,49 +4,122 @@
 {% block body%}
 
 
-<div class="container">
-	<br>
-	<div class="bd-example">
-		<table class="table table-hover">
-		<thead>
-			<tr>
-			<th scope="col">Tournament</th>
-			<th scope="col">Team 1</th>
-			<th scope="col">Score 1</th>
-			<th scope="col">Score 2</th>
-			<th scope="col">Team 2</th>
-			<th scope="col">Match Time</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for match in matches %}
-			<tr>
-				<td>{{ match.tourney.name }} </td>
-				<td>
-					{% if match.team1.logo %}
-						<img src="{{ match.team1.logo.url }}" alt="" class="team-logo" width="28" height="28px">
-					{% else %}
-						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
-					{% endif %}
-					{{ match.team1.name }} 
-				</td>
-				<td>{{ match.score1 }} </td>
-				<td>{{ match.score2 }} </td>
-				<td>
-					{% if match.team2.logo %}
-						<img src="{{ match.team2.logo.url }}" alt="" class="team-logo" width="28" height="28px">
-					{% else %}
-						<img src="{% static 'images/logo_placeholder.png' %}" alt="" class="logo-placeholder" width="28px" height="28px">
-					{% endif %}
-					{{ match.team2.name }} 
-				</td>
-				<td>{{ match.time | timeuntil }} </td>
-			</tr>
-			{% endfor %}
-		</tbody>
-		</table>
+{% for match in matches %}
+<div class="card">
+	<header class="card-header has-background-link">
+		<div class="card-header-title level">
+			<div class="level-left">
+				<div class="level-item">
+					<span class="icon-text has-text-white">
+						<span class="icon">
+							{% if match.tourney.logo %}
+								<img src="{{ match.tourney.logo.url }}">
+							{% else %}
+								<img src="{% static 'images/logo_placeholder.png' %}">
+							{% endif %}
+						</span>
+						<span>
+							<p class="has-text-white">{{ match.tourney.name }}</p> 
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="level-right">
+				<div class="level-item" style="color: white;">
+					{{ match.time | timeuntil }}
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="card-content">
+		<div class="content">
+			<div class="columns is-centerd">
+				<div class="column is-3"></div>
+				<div class="column has-text-centered">
+					<span class="icon-text">
+						<span class="icon">
+							{% if match.team1.logo %}
+								<img src="{{ match.team1.logo.url }}" alt="">
+							{% else %}
+								<img src="{% static 'images/logo_placeholder.png' %}">
+							{% endif %}
+						</span>
+						<span>
+							{{ match.team1.name }} 
+							{% if match.winner == 'T1' %}
+								&nbsp;
+								&nbsp;
+								&nbsp;
+								<span class="icon">
+									<i class="fas fa-crown" style="color: darkorange;"></i>
+								</span>
+							{% endif %}
+						</span>
+					</span>
+				</div>
+				<div class="column is-narrow has-text-centered is-success">
+					{{ match.score1 }}
+				</div>
+				<div class="column is-narrow has-text-centered">
+					vs
+				</div>
+				<div class="column is-narrow has-text-centered">
+					{{ match.score2 }}
+				</div>
+				<div class="column has-text-centered" >
+					<span class="icon-text">
+						<span>
+							{% if match.winner == 'T2' %}
+								<span class="icon">
+									<i class="fas fa-crown" style="color: darkorange;"></i>
+								</span>
+								&nbsp;
+								&nbsp;
+								&nbsp;
+							{% endif %}
+							{{ match.team2.name }} 
+						</span>
+						<span class="icon">
+							{% if match.team2.logo %}
+								<img src="{{ match.team2.logo.url }}" alt="">
+							{% else %}
+								<img src="{% static 'images/logo_placeholder.png' %}">
+							{% endif %}
+						</span>
+					</span>
+				</div>
+				<div class="column is-3"></div>
+			</div>
+		</div>
 	</div>
+	<footer class="card-footer">
+		<div class="card-footer-item has-background-info"><strong style="color: white;">{{ match.time | date:"d M Y" }} - {{ match.time | time:"H:i" }}</strong></div>
+
+			{% if match.winner == 'ON' %}
+
+				<div class="card-footer-item has-text-white has-background-danger"><strong style="color: white;">		
+						Ongoing
+					</strong>
+				</div>
+
+			{% elif match.winner == 'DW' %}
+
+				<div class="card-footer-item has-text-white has-background-warning"><strong style="color: black;">		
+						Draw
+					</strong>
+				</div>
+
+			{% else %}
+
+				<div class="card-footer-item has-text-white has-background-success"><strong style="color: white;">		
+						Finished
+					</strong>
+				</div>
+				
+			{% endif %}
+	</footer>
 </div>
-</div>
+<br>
+{% endfor %}
 
 {% endblock %}

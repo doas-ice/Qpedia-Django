@@ -16,8 +16,8 @@ class Tournies(models.Model):
 	logo = models.ImageField(upload_to='tournies/uploads/', null=True, blank=True)
 	date_start = models.DateTimeField()
 	date_end = models.DateTimeField()
-	is_finished = models.BooleanField(null=True, blank=True)
-	winner = models.IntegerField(null=True, blank=True)
+	is_finished = models.BooleanField(default=False)
+	winner = models.ForeignKey(Teams, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Matches(models.Model):
 	T1 = 'T1'

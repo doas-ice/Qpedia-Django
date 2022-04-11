@@ -1,6 +1,7 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
+{% block column%}
 {% block body%}
 
 <section class="hero is-link is-fullheight">
@@ -57,14 +58,18 @@
             </div>
             <div class="field">
               <button class="button is-success" type="submit">
-                Register
+                Sign Up
               </button>
             </div>
           </form>
+		  <div class="columns is-centered">
+			Already have an account?&nbsp;<a href="{% url 'login' %}"><u>Sign in</u></a>
+		  </div>
         </div>
       </div>
     </div>
   </div>
 </section>
    
+{% endblock %}
 {% endblock %}
