@@ -1,0 +1,60 @@
+{% extends "pedia_app/layout.html" %}
+{% load static %}
+
+{% block title %}
+		<title>Qpedia - Log In</title>
+{% endblock title %}
+
+
+{% block column %}
+{% block body%}
+
+<section class="hero is-link is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <form action="" method="post" class="box">
+			{% csrf_token %}
+            <div class="field">
+              <label for="" class="label">Username</label>
+              <div class="control has-icons-left">
+                <input type="username" name="uname" placeholder="e.g. bobsmith" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-user"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="" class="label">Password</label>
+              <div class="control has-icons-left">
+                <input type="password" name="passwd" placeholder="**********" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="" class="checkbox">
+                <input type="checkbox">
+               Remember me
+              </label>
+            </div>
+            <div class="field">
+              <button class="button is-success" type="submit">
+                Login
+              </button>
+            </div>
+          </form>
+		  <div class="column is-centered">
+			Don't have an account?&nbsp;<a href="{% url 'register' %}"><u>Register here</u></a>
+		  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+   
+{% endblock %}
+{% endblock column %}
+	

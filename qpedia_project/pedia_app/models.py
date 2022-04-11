@@ -1,5 +1,6 @@
 import os
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -16,8 +17,8 @@ class Tournies(models.Model):
 	logo = models.ImageField(upload_to='tournies/uploads/', null=True, blank=True)
 	date_start = models.DateTimeField()
 	date_end = models.DateTimeField()
-	is_finished = models.BooleanField(null=True, blank=True)
-	winner = models.IntegerField(null=True, blank=True)
+	is_finished = models.BooleanField(default=False)
+	winner = models.ForeignKey(Teams, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Matches(models.Model):
 	T1 = 'T1'
@@ -46,3 +47,16 @@ class Players(models.Model):
 	ign = models.CharField(max_length=100)
 	team = models.ForeignKey(Teams, on_delete=models.SET_NULL, null=True, blank=True)
 	photo = models.ImageField(upload_to='players/uploads/', null=True, blank=True)
+	rank = models.IntegerField()
+
+class News(models.Model):
+	title = models.TextField(null=True, blank=True)
+	author = models.ForeignKey(User, on_delete=models.CASCADE)
+	banner = models.ImageField(upload_to='news/uploads/', null=True, blank=True)
+	body = models.TextField(null=True, blank=True)
+	time = models.DateTimeField(auto_now_add=True, blank=True)
+
+class Feedback(models.Model):
+	name = models.TextField(null=True, blank=True)
+	email = models.TextField(null=True, blank=True)
+	msg = models.TextField(null=True, blank=True)

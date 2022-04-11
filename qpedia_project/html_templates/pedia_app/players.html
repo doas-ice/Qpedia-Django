@@ -1,15 +1,11 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
+{% block title %}
+		<title>Qpedia - Players</title>
+{% endblock title %}
+
 {% block body%}
-	{% for msg in messages %}
-	<div class="alert alert-success alert-dismissible fade show" role="alert">
-		<strong>{{msg}}</strong>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-		</button>
-	</div>
-	{% endfor %}
-	
 <div class="container">
 	<br>
 	<div class="bd-example">
@@ -52,7 +48,6 @@
 		</tbody>
 		</table>
 	</div>
-</div>
 </div>
 
 {% endblock %}

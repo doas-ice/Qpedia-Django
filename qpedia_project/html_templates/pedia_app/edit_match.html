@@ -1,48 +1,79 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
+{% block title %}
+		<title>Qpedia - Edit Match</title>
+{% endblock title %}
+
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
 {% block body%}
 
-<h1 class="text-center">Edit a match entry</h1>
-<div class="container">
-	<form class="" method='post' enctype="multipart/form-data">
+<h1 class="title is-centered has-text-centered">Edit a match entry</h1>
+<br>
+<form method='post' enctype="multipart/form-data">
 	{% csrf_token %}
-	<div class="row">
-		<div class="col">
-		<label for="exampleFormControlTextarea1" class="form-label">Tournament</label>
-		<br>
-		<select class="form-select" aria-label="Tournament" name="tourney">
-		<option selected value="{{ match.tourney.id }}">{{ match.tourney.name }}</option>
-		{% for t in tourney %}
-		<option value="{{ t.id }}">{{ t.name }}</option>
-		{% endfor %}
-		</select>
-		<br>
-		<label for="exampleFormControlTextarea1" class="form-label">Teams and Score</label>
-		<br>
-		<select class="form-select" style="width: 35%; display: inline-block;" aria-label="Team 1" name="team1">
-		<option selected value="{{ match.team1.id }}">{{ match.team1.name }}</option>
-		{% for t in teams %}
-		<option value="{{ t.id }}">{{ t.name }}</option>
-		{% endfor %}
-		</select>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input name='score1' class="form-control" style="width: 10%; display: inline-block;" id="exampleFormControlInput1" type="number" step="1" max="10" value="{{ match.score1 }}">   
-		<p style="width:10%; display:inline;"> &nbsp;&nbsp;&nbsp;&nbsp; vs &nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<input name='score2' class="form-control" style="width: 10%; display: inline-block;" id="exampleFormControlInput1" type="number" step="1" max="10" value="{{ match.score2 }}">
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<select class="form-select" style="width: 35%; display: inline-block;" aria-label="Team 2" name="team2">
-		<option selected value="{{ match.team2.id }}">{{ match.team2.name }}</option>
-		{% for t in teams %}
-		<option value="{{ t.id }}">{{ t.name }}</option>
-		{% endfor %}
-		</select>
-		<br>
-		<br>
-		<label for="exampleFormControlTextarea1" class="form-label">Match Time</label>
-		<br>
+	<div class="field">
+		<label class="label">Tournament</label>
+		<div class="control">
+			<div class="select">
+				<select name="tourney">
+				<option selected value="{{ match.tourney.id }}">{{ match.tourney.name }}</option>
+				{% for t in tourney %}
+				<option value="{{ t.id }}">{{ t.name }}</option>
+				{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Teams and Score</label>
+		<div class="control">
+			<div class="columns">
+				<div class="column is-narrow">
+					<div class="select">
+						<select name="team1">
+						<option selected value="{{ match.team1.id }}">{{ match.team1.name }}</option>
+						{% for t in teams %}
+						<option value="{{ t.id }}">{{ t.name }}</option>
+						{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="column is-1">
+					<input class="input" name='score1' type="number" step="1" max="10" value="{{ match.score1 }}">   
+				</div>
+				<div class="column is-narrow">
+					<h3 class="title is-3"> - </h3>
+				</div>
+				<div class="column is-1">
+					<input class="input" name='score2' type="number" step="1" max="10" value="{{ match.score2 }}">   
+				</div>
+				<div class="column is-narrow">
+					<div class="select">
+						<select name="team2">
+						<option selected value="{{ match.team2.id }}">{{ match.team2.name }}</option>
+						{% for t in teams %}
+						<option value="{{ t.id }}">{{ t.name }}</option>
+						{% endfor %}
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Match Time</label>
 			<div
-				class='input-group'
+				class='control has-icons-right'
 				id='datetimepicker1'
 				data-td-target-input='nearest'
 				data-td-target-toggle='nearest'
@@ -51,36 +82,44 @@
 				id='datetimepicker1Input'
 				name='time'
 				type='text'
+				class='input'
 				value="{{ frtime }}"
-				class='form-control'
 				data-td-target='#datetimepicker1'
+				data-td-toggle='datetimepicker'
 			/>
 			<span
-				class='input-group-text'
+				class='icon is-small is-right'
 				data-td-target='#datetimepicker1'
 				data-td-toggle='datetimepicker'
 			>
-				<span class='fas fa-calendar'></span>
+				<i class='fas fa-calendar'></i>
 			</span>
 			</div>
 
 			<script type="text/javascript">
 				new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'));
 			</script>
-           
-		<br>
-		<div class="form-check form-switch">
-		<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="status" {% if match.is_finished %}checked{% endif %}>
-		<label class="form-check-label" for="flexSwitchCheckDefault">Match Concluded</label>
-		</div>
-		<br>
-		<div class="mt-2">
-			<input class="btn btn-primary" type="submit" value="Submit">
-		</div>
+	</div>
+	<div class="field">
+		<div class="control">
+			<label class="checkbox">
+				<input type="checkbox" name="status" {% if match.is_finished %}checked{% endif %}>
+			Match Concluded
+			</label>
 		</div>
 	</div>
-	</form>
+	<br>
+	<div class="field">
+		<div class="control">
+			<input class="button is-primary" type="submit" value="Submit"></input>
+		</div>
+	</div>
+</form>
 
+{% endblock body %}
+
+		</div>
+		<div class="column is-2"></div>
 </div>
 
-{% endblock %}
+{% endblock column %}

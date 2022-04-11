@@ -2,11 +2,42 @@
 {% load static %}
 
 {% block body%}
+{% for n in news %}
+<div class="card">
+	<div class="card-image">
+		<figure class="image is-2by1">
+			
+			{% if n.banner %}
+				<img src="{{ n.banner.url }}" alt="Placeholder Image">
+			{% else %}
+				<img src="{% static 'images/logo_placeholder.png' %} " alt="Placeholder image">
+			{% endif %}
+				
+		</figure>
+	</div>
+	<div class="card-content">
+		<p class="title is-4">{{ n.title }}</p>
+		<div class="media">
+			<div class="media-left">
+				<figure class="image is-48x48">
+				<img class="is-rounded" src="{% static 'images/pimp.jpg' %}" alt="Placeholder image">
+				</figure>
+			</div>
+			<div class="media-content">
+				<p class="subtitle"></p>
+				<p class="title is-6">{{ n.author.first_name }} {{ n.author.last_name }}</p>
+				<p class="subtitle is-7">@{{ n.author.username }}</p>
+			</div>
+			<div class="media-right">
+				<time datetime="">{{ n.time | date:"d M Y" }} - {{ n.time | time:"H:i" }}</time>
+			</div>
+		</div>
 
-
-   
-    <!-- section -2  -->
-    <div class="container">
-      <h1 class="text-center">Home page test</h1></div>
-    </div>
+			<div class="content">
+				{{ n.body }}
+			</div>
+	</div>
+</div>
+<br>
+{% endfor %}
 {% endblock %}

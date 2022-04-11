@@ -1,48 +1,93 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
-{% block body%}
+{% block title %}
+		<title>Qpedia - Edit Team</title>
+{% endblock title %}
 
-<h1 class="text-center">Edit a team entry</h1>
-<div class="container">
-	<form class="" method='post' enctype="multipart/form-data">
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
+{% block body%}
+<h1 class="title is-centered has-text-centered">Edit an existing team entry</h1>
+<form method='post' enctype="multipart/form-data">
 	{% csrf_token %}
-	<div class="row">
-		<div class="col">
-		<label for="exampleFormControlInput1" class="form-label">Team Name</label>
-		<input name='name' class="form-control" value="{{ team.name }}" aria-label="Team Name">
-		<br>
-		<label for="exampleFormControlInput1" class="form-label">Team Rank</label>
-		<input name='rank' class="form-control" id="exampleFormControlInput1" type="number" step="1" max="1000" value="{{ team.rank }}">
-		<br>
-		<label for="exampleFormControlTextarea1" class="form-label">Region</label>
-		<br>
-		<select class="form-select" aria-label="Regions" name="region">
-		<option selected value="{{ team.region }}">{{ team.region }}</option>
-		<option value="America">America</option>
-		<option value="Europe">Europe</option>
-		<option value="Ocenia">Ocenia</option>
-		<option value="Asia">Asia</option>
-		<option value="Africa">Africa</option>
-		<option value="International">International</option>
-		</select>
-		<br>
-		<div class="mb-3">
-		<label for="formFile" class="form-label">Upload a logo</label>
-		<input class="form-control" name="logo" type="file" id="formFile">
-		</div>
-		<br>
-		<div class="mt-2">
-			<input class="btn btn-primary" type="submit" value="Submit">
-		</div>
+	<div class="field">
+		<label class="label">Team Name</label>
+		<div class="control">
+			<input name='name' class="input" placeholder="Team Name" aria-label="Team Name" value="{{ team.name }}">
 		</div>
 	</div>
-	</form>
+	<div class="field">
+		<label class="label">Team Rank</label>
+		<div class="control">
+			<input name='rank' class="input" type="number" step="1" max="2000" aria-label="Team Rank" value="{{ team.rank }}">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Team Region</label>
+		<div class="control">
+			<div class="select">
+				<select name="region">
+				<option selected value="{{ team.region }}">{{ team.region }}</option>
+				<option value="America">America</option>
+				<option value="Europe">Europe</option>
+				<option value="Ocenia">Ocenia</option>
+				<option value="Asia">Asia</option>
+				<option value="Africa">Africa</option>
+				<option value="International">International</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<div class="label">Team Logo</div>
+		<div class="control">
+			<div id="file-js-logo" class="file has-name is-fullwidth">
+				<label class="file-label">
+					<input class="file-input" type="file" name="logo">
+					<span class="file-cta">
+					<span class="file-icon">
+						<i class="fas fa-upload"></i>
+					</span>
+					<span class="file-label">
+						Upload a logo...
+					</span>
+					</span>
+					<span class="file-name">
+						e.g. logo.png
+					</span>
+				</label>
+			</div>
+			<script>
+			const fileInput = document.querySelector('#file-js-logo input[type=file]');
+			fileInput.onchange = () => {
+				if (fileInput.files.length > 0) {
+				const fileName = document.querySelector('#file-js-logo .file-name');
+				fileName.textContent = fileInput.files[0].name;
+				}
+			}
+			</script>
+		</div>
+	</div>
+	<br>
+	<div class="field">
+		<div class="control">
+			<input class="button is-primary" type="submit" value="Submit"></input>
+		</div>
+	</div>
+</form>
+{% endblock body %}
 
-	<br>
-	<br>
-	<br>
-	
+		</div>
+		<div class="column is-2"></div>
 </div>
 
-{% endblock %}
+{% endblock column %}

@@ -1,51 +1,64 @@
 {% extends "pedia_app/layout.html" %}
 {% load static %}
 
+{% block title %}
+		<title>Qpedia - Edit Tournament</title>
+{% endblock title %}
+
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
 {% block body%}
-
-	{% for msg in messages %}
-	<div class="alert alert-success alert-dismissible fade show" role="alert">
-		<strong>{{msg}}</strong>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-		</button>
-	</div>
-	{% endfor %}
-
-<section>
-<h1 class="text-center">Edit tournament</h1>
-<div class="container">
-	<form class="" method='post' enctype="multipart/form-data">
+<h1 class="title is-centered has-text-centered">Edit a tournament entry</h1>
+<form method='post' enctype="multipart/form-data">
 	{% csrf_token %}
-	<div class="row">
-		<div class="col">
-		<label for="exampleFormControlInput1" class="form-label">Tournament Name</label>
-		<input name='name' class="form-control" placeholder="Tournament Name" aria-label="Tournament Name" value="{{ tourney.name }}">
-		<br>
-		<label for="exampleFormControlInput1" class="form-label">Tournament Tier</label>
-		<select class="form-select" aria-label="Tier" name="tier">
-		<option disabled selected>{{ tourney.tier }}</option>
-		<option value="S">S</option>
-		<option value="A">A</option>
-		<option value="B">B</option>
-		<option value="C">C</option>
-		</select>
-		<br>
-		<label for="exampleFormControlTextarea1" class="form-label">Region</label>
-		<br>
-		<select class="form-select" aria-label="Regions" name="region">
-		<option disabled selected>{{ tourney.region }}</option>
-		<option value="America">America</option>
-		<option value="Europe">Europe</option>
-		<option value="Ocenia">Ocenia</option>
-		<option value="Asia">Asia</option>
-		<option value="Africa">Africa</option>
-		<option value="International">International</option>
-		</select>
-		<br>
-		<label for="exampleFormControlTextarea1" class="form-label">Starting Date</label>
-		<br>
+	<div class="field">
+		<label class="label">Tournament</label>
+		<div class="control">
+			<input name='name' class="input" placeholder="Tournament Name" aria-label="Tournament Name" value="{{ tourney.name }}">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Tournament Tier</label>
+		<div class="control">
+			<div class="select">
+				<select name="tier">
+				<option disabled selected>{{ tourney.tier }}</option>
+					<option value="S">S</option>
+					<option value="A">A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Region</label>
+		<div class="control">
+			<div class="select">
+				<select name="region">
+				<option disabled selected>{{ tourney.region }}</option>
+					<option value="America">America</option>
+					<option value="Europe">Europe</option>
+					<option value="Ocenia">Ocenia</option>
+					<option value="Asia">Asia</option>
+					<option value="Africa">Africa</option>
+					<option value="International">International</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Starting Date</label>
 			<div
-				class='input-group'
+				class='control has-icons-right'
 				id='datetimepicker1'
 				data-td-target-input='nearest'
 				data-td-target-toggle='nearest'
@@ -54,69 +67,139 @@
 				id='datetimepicker1Input'
 				name='date_start'
 				type='text'
-				class='form-control'
-				data-td-target='#datetimepicker1'
+				class='input'
 				value="{{ frdate_start }}"
+				data-td-target='#datetimepicker1'
+				data-td-toggle='datetimepicker'
 			/>
 			<span
-				class='input-group-text'
+				class='icon is-small is-right'
 				data-td-target='#datetimepicker1'
 				data-td-toggle='datetimepicker'
 			>
-				<span class='fas fa-calendar'></span>
+				<i class='fas fa-calendar'></i>
 			</span>
 			</div>
 
 			<script type="text/javascript">
 				new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'));
 			</script>
-           
-		<br>
-		<label for="exampleFormControlTextarea1" class="form-label">End Date</label>
-		<br>
+	</div>
+	<div class="field">
+		<label class="label">End Date</label>
 			<div
-				class='input-group'
+				class='control has-icons-right'
 				id='datetimepicker2'
 				data-td-target-input='nearest'
 				data-td-target-toggle='nearest'
 			>
 			<input
-				id='datetimepicker2Input'
+				id='datetimepicker1Input'
 				name='date_end'
 				type='text'
-				class='form-control'
-				data-td-target='#datetimepicker2'
+				class='input'
 				value="{{ frdate_end }}"
+				data-td-target='#datetimepicker2'
+				data-td-toggle='datetimepicker'
 			/>
 			<span
-				class='input-group-text'
+				class='icon is-small is-right'
 				data-td-target='#datetimepicker2'
 				data-td-toggle='datetimepicker'
 			>
-				<span class='fas fa-calendar'></span>
+				<i class='fas fa-calendar'></i>
 			</span>
 			</div>
 
 			<script type="text/javascript">
 				new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'));
 			</script>
-           
-		<br>
-		<div class="mb-3">
-		<label for="formFile" class="form-label">Upload a logo</label>
-		<input class="form-control" name="logo" type="file" id="formFile">
-		</div>
-		<br>
-		<div class="mt-2">
-			<input class="btn btn-primary" type="submit" value="Submit">
-		</div>
+	</div>
+	<div class="field">
+		<div class="label">Tournament Logo</div>
+		<div class="control">
+			<div id="file-js-logo" class="file has-name is-fullwidth">
+				<label class="file-label">
+					<input class="file-input" type="file" name="logo">
+					<span class="file-cta">
+					<span class="file-icon">
+						<i class="fas fa-upload"></i>
+					</span>
+					<span class="file-label">
+						Upload a logo…
+					</span>
+					</span>
+					<span class="file-name">
+						e.g. logo.png
+					</span>
+				</label>
+			</div>
+			<script>
+			const fileInput = document.querySelector('#file-js-logo input[type=file]');
+			fileInput.onchange = () => {
+				if (fileInput.files.length > 0) {
+				const fileName = document.querySelector('#file-js-logo .file-name');
+				fileName.textContent = fileInput.files[0].name;
+				}
+			}
+			</script>
 		</div>
 	</div>
-	</form>
+	<div class="field">
+		<div class="control">
+			<label class="checkbox">
+				<input id="chkWin" type="checkbox" name="status" {% if tourney.is_finished %}checked{% endif %}>
+			Tournament Finished
+			</label>
+		</div>
+	</div>
+	<div class="field" id="selWin" 
+	{% if not tourney.winner %}
+		style="display: none"
+	{% endif %}
+		 >
+		<label class="label">Tournament Winner</label>
+		<div class="control">
+			<div class="select">
+				<select name="winner">
+				<option selected value="{{ tourney.winner.id }}">
+					{% if tourney.winner %}
+						{{ tourney.winner.name }}
+					{% else %}
+						Tournament Winner
+					{% endif %}
+					</option>
+				{% for t in teams %}
+				<option value="{{ t.id }}">{{ t.name }}</option>
+				{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(function () {
+				$("#chkWin").click(function () {
+					if ($(this).is(":checked")) {
+						$("#selWin").show();
+					} else {
+						$("#selWin").hide();
+					}
+				});
+			});
+		</script>
+	<br>
+	<div class="field">
+		<div class="control">
+			<input class="button is-primary" type="submit" value="Submit"></input>
+		</div>
+	</div>
+</form>
 
+{% endblock body %}
 
-</section>
-
+		</div>
+		<div class="column is-2"></div>
 </div>
 
-{% endblock %}
+{% endblock column %}
