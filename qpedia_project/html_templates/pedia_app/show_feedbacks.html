@@ -1,0 +1,54 @@
+{% extends "pedia_app/layout.html" %}
+{% load static %}
+
+{% block title %}
+		<title>Qpedia - Show Feedbacks</title>
+{% endblock title %}
+
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
+{% block body%}
+<div class="container">
+	<section class="section is-centerd">
+	<h3 class="title is-3 is-centered has-text-centered">User Feedbacks</h3>
+		{% for f in feed %}
+<div class="card">
+  <div class="card-content">
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-48x48">
+          <img class="is-rounded" src="{% static 'images/player_placeholder.png' %}" alt="Placeholder image">
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="subtitle"></p>
+        <p class="title is-6">{{ f.name }}</p>
+        <p class="subtitle is-7">{{ f.email }}</p>
+      </div>
+    </div>
+
+    <div class="content">
+		{{ f.msg }}
+    </div>
+  </div>
+</div>
+<br>
+		{% endfor %}
+	</section>
+</div>
+
+{% endblock body %}
+
+		</div>
+		<div class="column is-2"></div>
+</div>
+
+{% endblock column %}

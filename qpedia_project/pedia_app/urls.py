@@ -28,4 +28,6 @@ urlpatterns = [
     path('delete_tourney/<tourney_id>', views.delete_tourney, name='delete_tourney'),
     path('delete_player/<player_id>', views.delete_player, name='delete_player'),
     path('delete_news/<news_id>', views.delete_news, name='delete_news'),
+    path('feedback/', views.feedback, name='feedback'),
+    path('show_feedbacks/', views.show_feedbacks, name='show_feedbacks'),
 ]

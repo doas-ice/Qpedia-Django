@@ -1,0 +1,62 @@
+{% extends "pedia_app/layout.html" %}
+{% load static %}
+
+{% block title %}
+		<title>Qpedia - Provide Feedback</title>
+{% endblock title %}
+
+{% block column %}
+	
+	<br>
+	<br>
+	<br>
+
+<div class="columns">
+	<div class="column is-2"></div>
+		<div class="column">
+
+{% block body%}
+<h1 class="title is-centered has-text-centered">Provide Feedback</h1>
+<form method='post' enctype="multipart/form-data">
+	{% csrf_token %}
+		<div class="field">
+		<label class="label">Your Name</label>
+		<div class="control has-icons-left has-icons-right">
+			<input class="input" name="name" type="text" placeholder="e.g. Bob Smith">
+			<span class="icon is-small is-left">
+			<i class="fas fa-user"></i>
+			</span>
+		</div>
+		</div>
+
+		<div class="field">
+		<label class="label">Your Email</label>
+		<div class="control has-icons-left has-icons-right">
+			<input class="input" name="email" type="email" placeholder="e.g. bobsmith@gmail.com">
+			<span class="icon is-small is-left">
+			<i class="fas fa-envelope"></i>
+			</span>
+		</div>
+		</div>
+
+		<div class="field">
+		<label class="label">Your Message</label>
+		<div class="control">
+			<textarea class="textarea" name="msg" placeholder="Your Feedback"></textarea>
+		</div>
+		</div>
+
+	<div class="field">
+		<div class="control">
+			<button class="button is-link">Submit</button>
+		</div>
+	</div>
+	<div class="tile is-centered has-text-centered"><a href="{% url 'show_feedbacks' %}">Show other feedbacks</a></div>
+</form>
+{% endblock body %}
+
+		</div>
+		<div class="column is-2"></div>
+</div>
+
+{% endblock column %}

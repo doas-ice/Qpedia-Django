@@ -388,3 +388,9 @@ def feedback(request):
 		feed.save()
 		messages.success(request, "Thank for the feedback")
 		return redirect('feedback')
+	return render(request, 'pedia_app/feedback.html')
+
+@login_required(login_url='login')
+def show_feedbacks(request):
+	feed = models.Feedback.objects.all()
+	return render(request, 'pedia_app/show_feedbacks.html', {'feed':feed})
